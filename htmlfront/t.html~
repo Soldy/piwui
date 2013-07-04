@@ -29,7 +29,7 @@
                  width:320px;
             	  height:420px;
             	  background: #262626;
-            	  box-shadow: 0px 0px 60px 80px #050505 inset;
+            	  box-shadow: 0px 0px 60px 60px #050505 inset;
                  
             }
             .playerline{
