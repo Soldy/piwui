@@ -122,6 +122,38 @@
                  background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
                  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
             }
+            .osonslidinghouse{
+            	   position: relative;
+            	   background: #000; 
+             }
+             .osonslidingrail{
+                 position:relative;
+                 top:9px;
+                 height:2px;
+                 width:320px;
+                 background:#2989d8;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+             }
+             .osonslidingtrain{
+                 position:relative;
+                 top:2px;
+                 height:12px;
+                 width:12px;
+                 background:#2989d8;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+             }
             .playerbutton{
                  float:left;
                  margin-top:10px;
@@ -246,9 +278,679 @@
             if(navigator.userAgent.match(/iPhone/i)){
                 window.scrollTo(0,1);
             }
+
+
             
 //this.touchstart = function (ev) { tool.mousedown(ev); }, this.touchmove = function (ev) { tool.mousemove(ev); } 
 //this.touchend = function (ev) { tool.mouseup(ev); }
+
+// slider 
+            var osonslider = {
+            	 interval : "",
+            	 intervalac : 0,
+            	 trainactive : "none",
+            	 trainframe : 50,
+            	 trainstartx : 0,
+            	 trainstarty : 0,
+            	 trainlastx : 0,
+            	 trainlasty : 0,
+            	 trainposoutx : 100,
+            	 trainposouty : 50,
+            	 trainround : 0,
+            	 traintimeout : 3,
+            	 refreszones : {
+            	 
+            	 },
+            	 minimums : {
+            	 },
+            	 maximums : {
+            	 },
+                outcomes : {
+                },
+            }
+
+            osonslidermake("playerstatusbar", 0, 100, "none");
+            function osonslidermake(zone, minnum, maxnum, refreshzone){
+            	 var outhtml = "";
+            	 var zoneid = document.getElementById(zone);
+            	 var zonehouse = "osonslidinghouse"+zone;
+                var zonerail = "osonslidingrail"+zone;
+                var zonetrain = "osonslidingtrain"+zone;
+                var heightt = parseInt(zoneid.offsetHeight);
+                var widtht = parseInt(zoneid.offsetWidth);
+                if ( refreshzone === 'undefined') {
+                    refreshzone = 'none';
+                }
+                osonslider.outcomes[zone] = minnum;
+                if (refreshzone !== 'none'){
+                    document.getElementById(refreshzone).value = minnum.toString();
+                }
+                osonslider.refreszones[zone]=refreshzone;
+                osonslider.minimums[zone]=minnum;
+                osonslider.maximums[zone]=maxnum;
+                outhtml = outhtml+"<div class='osonslidinghouse' id='"+zonehouse+"'>";
+                outhtml = outhtml+"<div class='osonslidingrail' id='"+zonerail+"'>";
+                outhtml = outhtml+"<div class='osonslidingtrain' id='"+zonetrain+"'";
+                outhtml = outhtml+" onmousedown='osonslidertrainclick(";
+                outhtml = outhtml+'"'+zone+'")';
+                outhtml = outhtml+"' onmouseup='osonslidertrainunclick(";
+                outhtml = outhtml+'"'+zone+'"'+")'>";
+                outhtml = outhtml+"</div></div></div>";
+                zoneid.innerHTML = outhtml; 
+                document.getElementById(zonehouse).style.height = heightt.toString()+"px";
+                document.getElementById(zonehouse).style.width = widtht.toString()+"px";
+                document.getElementById(zonerail).style.top = ((heightt-parseInt(document.getElementById(zonerail).offsetHeight))/2).toString()+'px';
+                document.getElementById(zonerail).style.width = widtht.toString()+"px";
+                document.getElementById(zonetrain).style.top = (-1*(parseInt(document.getElementById(zonetrain).offsetHeight)-parseInt(document.getElementById(zonerail).offsetHeight))/2).toString()+'px';
+            }
+            
+            function osonslidertrainclick (slidertrain) {
+                if (osonslider.trainactive !== slidertrain){
+               	  osonslidertrainunclick();
+                }
+                if (osonslider.intervalac === 0) {
+                   osonslider.trainactive = slidertrain;
+           	   	 osonslider.intervalac = 1;
+           	   	 osonslider.trainstartx = osonpointer.p[0].posx;
+           	   	 osonslider.trainstarty = osonpointer.p[0].posy;
+           	   	 osonslider.trainlastx = osonpointer.p[0].posx;
+           	   	 osonslider.trainlasty = osonpointer.p[0].posy;
+                   osonslider.interval=setInterval(function(){osonslidertrainmove()}, osonslider.trainframe);
+                }     	
+            	
+            }
+            
+            function osonsliderminc(zone, minnum) {
+                osonslider.minimums[zone]=minnum;	
+                osonslidertrainmove();
+            }
+
+            function osonslidermaxc(zone, maxnum) {
+                osonslider.maximums[zone]=maxnum;	
+                osonslidertrainmove();
+            }
+            function osonsliderlimitc(zone, minnum, maxnum) {
+                osonslider.minimums[zone]=minnum;
+                osonslider.maximums[zone]=maxnum;	
+                osonslidertrainmove();
+            }
+            
+            function osonslidertrainunclick () {
+           	    clearInterval(osonslider.interval);
+                osonslider.intervalac = 0;
+                osonslider.trainstartx = 0;
+           	    osonslider.trainstarty = 0;
+          	    osonslider.trainlastx = 0;
+                osonslider.trainlasty = 0;
+           	    osonslider.trainround = 0;
+           	    osonslider.trainactive = "none";
+            }            
+            
+            function osonslidertrainmove() {
+                if (osonpointer.p[0].posx === osonslider.trainlastx ) {
+                    osonslider.trainround++;
+                    if (osonslider.trainround > osonslider.trainframe*osonslider.traintimeout){
+                        osonslidertrainunclick();	
+                    }
+               } else {
+                   if (osonpointer.p[0].posy > osonslider.trainstarty+osonslider.trainposouty  || osonslider.trainstarty-osonslider.trainposouty > osonmouse.posy){
+               		 osonslidertrainunclick();
+               	 } else {
+               	    var corid = osonslider.trainactive;
+                      var corsid = "osonslidinghouse"+osonslider.trainactive;
+                      var corsbid = "osonslidingrail"+osonslider.trainactive;
+                      var corspbid = "osonslidingtrain"+osonslider.trainactive;
+           	          var pos = {
+           	                left : parseInt(document.getElementById(corspbid).offsetLeft),
+           	                top : parseInt(document.getElementById(corspbid).offsetTop),
+           	          }
+           	          pos.left = parseInt(pos.left/osonfit.scale);
+//           	          writedebug(parseInt(pos.left).toString()+' , '+parseInt(pos.top).toString()+'<br>');
+                      if (0 > pos.left+(osonpointer.p[0].posx-osonslider.trainlastx)) {
+                          document.getElementById(corspbid).style.left='0px';
+                          osonslider.outcomes[osonslider.trainactive] = osonslider.minimums[osonslider.trainactive];
+                          if (osonslider.refreszones[osonslider.trainactive] !== 'none'){
+                              document.getElementById(osonslider.refreszones[osonslider.trainactive]).value = osonslider.outcomes[osonslider.trainactive].toString();
+                          }
+                      	  osonslidertrainunclick();
+           	          } else if(pos.left+(osonpointer.p[0].posx-osonslider.trainlastx) > parseInt(document.getElementById(corsbid).offsetwidth)-parseInt(document.getElementById(corspbid).offsetWidth)){
+          	          	  document.getElementById(corsbid).style.left = (parseInt(document.getElementById(corsbid).outerWidth)-parseInt(document.getElementById(corspbid).offsetWidth)).toString()+'px';
+                          osonslider.outcomes[osonslider.trainactive] = osonslider.maximums[osonslider.trainactive];
+                          if (osonslider.refreszones[osonslider.trainactive] !== 'none'){
+                              document.getElementById(osonslider.refreszones[osonslider.trainactive]).value = osonslider.outcomes[osonslider.trainactive].toString();
+                          }
+                          osonslidertrainunclick();
+           	          } else {
+           	              document.getElementById(corspbid).style.left = ( parseInt(document.getElementById(corspbid).offsetLeft)+(osonpointer.p[0].posx-osonslider.trainlastx)).toString()+'px'; 	
+                          pos = {
+           	                left : parseInt(document.getElementById(corspbid).offsetLeft),
+           	                top : parseInt(document.getElementById(corspbid).offsetTop),
+           	              }
+                          pos.left = parseInt(pos.left/osonfit.scale);
+                          osonslider.outcomes[osonslider.trainactive] = parseInt((osonslider.maximums[osonslider.trainactive]-osonslider.minimums[osonslider.trainactive])*((pos.left)/parseInt(document.getElementById(corsbid).offsetWidth)-parseInt(document.getElementById(corspbid).offsetWidth)))+osonslider.minimums[osonslider.trainactive];
+                          if (osonslider.refreszones[osonslider.trainactive] !== 'none'){
+                              document.getElementById(osonslider.refreszones[osonslider.trainactive]).value = osonslider.outcomes[osonslider.trainactive].toString();
+                          }
+           	          }
+           	          
+           	          osonslider.trainlastx = osonpointer.p[0].posx;
+
+               	 }
+               }
+            }   
+            
+            function osonslidergetdata(slider){
+          	    var corid = document.getElementById(slider);
+                var corsid = document.getElementById("osonslidinghouse"+slider);
+                var corsbid = document.getElementById("osonslidingrail"+slider);
+                var corspbid = document.getElementById("osonslidingtrain"+slider);            	
+    	          pos = parseInt(corspbid.style.left);            	
+                var outvar = pos/(corsbid.offsetWidth-corspbid.offsetWidth);
+                return outvar;
+            }
+
+            function osonsliderchangedata(slider, newdata){
+          	    var corid = document.getElementById(slider);
+                var corsid = document.getElementById("osonslidinghouse"+slider);
+                var corsbid = document.getElementById("osonslidingrail"+slider);
+                var corspbid = document.getElementById("osonslidingtrain"+slider);            	
+   	          if ((parseInt(newdata)>osonslider.minimums[slider]) && (osonslider.maximums[slider]>parseInt(newdata))){
+                    corspbid.style.left = (((parseInt(corsbid.offsetWidth)-parseInt(corspbid.offsetWidth))*((parseInt(newdata)-osonslider.minimums[slider])/(osonslider.maximums[slider]-osonslider.minimums[slider]))).toString()+'px');
+                    if(osonslider.refreszones[slider] !== 'none'){
+                        document.getElementById(osonslider.refreszones[slider]).value = parseInt(newdata).toString();
+                    }
+                    osonslider.outcomes[slider] = parseInt(newdata);
+                } else {
+                    if(osonslider.refreszones[slider] !== 'none'){
+                        document.getElementById(osonslider.refreszones[slider]).value = osonslider.outcomes[slider].toString();
+                    }               
+                }
+            }
+
+/// touchscript
+
+
+            document.body.addEventListener('touchstart', function(e) {
+                osontouchdetectstart(e);
+                e.preventDefault();
+            }, false);
+            document.body.addEventListener('touchmove', function(e) {
+                osontouchdetectmove(e);
+                e.preventDefault();
+            }, false);
+            document.body.addEventListener('touchend', function(e) {
+                osontouchdetectend(e);
+                e.preventDefault();
+            }, false);
+            document.body.addEventListener('mousedown', function(event) {
+                osonmousedetectdown(event);
+            });
+
+            document.body.addEventListener('mouseup', function(event) {
+                osonmousedetectup(event);
+            });
+
+            var osonpointer = {
+            	 p : new Array,
+            	 setup : {
+            	 	  fingers : 3,
+            	     onoff : 1,
+            	 },
+            }
+            function osonpointermakearray(){
+            	 for (i = 0;osonpointer.setup.fingers > i ; i++){
+                    osonpointer.p[i] = {
+           	        posx : 0,
+           	        posy : 0,
+           	        oposx : 0,
+           	        oposy : 0,
+           	        deskoposx : 0,
+           	        deskoposy : 0,
+           	        deskposx : 0,
+           	        deskposy : 0,
+           	        startposx : 0,
+           	        startposy : 0,
+           	        startoposx : 0,
+           	        startoposy : 0,
+           	        startdeskposx : 0,
+           	        startdeskposy : 0,
+           	        startdeskoposx : 0,
+           	        startdeskoposy : 0,
+           	        endposx : 0,
+           	        endposy : 0,
+           	        endoposx : 0,
+           	        endoposy : 0,
+           	        enddeskposx : 0,
+           	        enddeskposy : 0,
+           	        enddeskoposx : 0,
+           	        enddeskoposy : 0,
+           	        clickposx : 0,
+           	        clickposy : 0,
+           	        clickoposx : 0,
+           	        clickoposy : 0,
+           	        clickdeskposx : 0,
+           	        clickdeskposy : 0,
+           	        clickdeskoposx : 0,
+           	        clickdeskoposy : 0,
+           	        lastclick : 0,
+           	        currentclick : 0,
+           	        active : 0,
+           	        movedata : {
+           	            posx : new Array,
+           	            posy : new Array,
+           	            oposx : new Array,
+           	            oposy : new Array,
+           	            deskoposx : new Array,
+           	            deskoposy : new Array,
+           	            deskposx : new Array,
+           	            deskposy : new Array,
+           	            i : 0
+           	       }
+                }
+            }
+         }
+        osonpointermakearray();
+            function osonpointerdetectstart() {
+            		
+            }
+
+
+            function osonpointerdetectmove() {
+
+            }
+            
+            function osonpointerdetectend() {
+
+            }
+
+            function osonpointerdetectclick() {
+                
+            }
+
+
+
+// mouse
+
+
+            var osonmouse = {
+           	    posx : 0,
+           	    posy : 0,
+           	    oposx : 0,
+           	    oposy : 0,
+                deskoposx : 0,
+           	    deskoposy : 0,
+           	    deskposx : 0,
+           	    deskposy : 0,
+           	    endposx : 0,
+           	    endposy : 0,
+           	    endoposx : 0,
+           	    endoposy : 0,
+                enddeskoposx : 0,
+           	    enddeskoposy : 0,
+           	    enddeskposx : 0,
+           	    enddeskposy : 0,
+           	    startposx : 0,
+           	    startposy : 0,
+           	    startoposx : 0,
+           	    startoposy : 0,
+                startdeskoposx : 0,
+           	    startdeskoposy : 0,
+           	    startdeskposx : 0,
+           	    startdeskposy : 0,
+           	    fclickposx : 0,
+           	    fclickposy : 0,
+           	    lastclick : 0,
+           	    currentclick : 0,
+           	    catchin : 0,
+                movedata : {
+           	        posx : new Array,
+           	        posy : new Array,
+           	        oposx : new Array,
+           	        oposy : new Array,
+           	        deskoposx : new Array,
+           	        deskoposy : new Array,
+           	        deskposx : new Array,
+           	        deskposy : new Array,
+					     i : 0
+           	    }
+            }
+
+            
+            document.body.onmousemove=function(event) {
+   	           osonmouse.oposx = event.pageX;
+    	           osonmouse.oposy = event.pageY;
+    	           osonmouse.posx = parseInt(osonmouse.oposx/osonfit.scale);
+    	           osonmouse.posy = parseInt(osonmouse.oposy/osonfit.scale);
+                 osonmouse.deskoposx = osonmouse.oposx - parseInt(osonfit.marginleft);
+                 osonmouse.deskoposy = osonmouse.oposy - parseInt(osonfit.margintop);
+                 osonmouse.deskposx = parseInt(osonmouse.deskoposx/osonfit.scale);
+                 osonmouse.deskposy = parseInt(osonmouse.deskoposy/osonfit.scale);
+                 osonpointer.p[0].oposx = osonmouse.oposx;
+        	        osonpointer.p[0].oposy = osonmouse.oposy;
+        	        osonpointer.p[0].posx = osonmouse.posx;
+                 osonpointer.p[0].posy = osonmouse.posy;
+                 osonpointer.p[0].deskposx = osonmouse.deskposx;
+                 osonpointer.p[0].deskposy = osonmouse.deskposy;
+                 osonpointer.p[0].deskoposx = osonmouse.deskoposx
+                 osonpointer.p[0].deskoposy = osonmouse.deskoposy;
+                 if(osonmouse.catchin === 1){
+                 	   osonmousedetectmove();
+                 }
+            }; 
+       
+           function osonmousedetectdown(evt) {
+           	   if (osontouch.active === 0) {
+                   osonmouse.startoposx = osonmouse.oposx;
+    	             osonmouse.startoposy = osonmouse.oposy;
+    	             osonmouse.startposx = osonmouse.posx;
+    	             osonmouse.startposy = osonmouse.posy;
+                   osonmouse.startdeskoposx = osonmouse.deskoposx;
+                   osonmouse.startdeskoposy = osonmouse.deskoposy;
+                   osonmouse.startdeskposx = osonmouse.deskposx;
+                   osonmouse.startdeskposy = osonmouse.deskposy;
+                   osonmouse.catchin = 1;
+                   if(osonpointer.setup.onoff === 1){
+            	        osonpointer.p[0].startoposx = osonmouse.startoposx;
+            	        osonpointer.p[0].startoposy = osonmouse.startoposy;
+            	        osonpointer.p[0].startposx = osonmouse.startposx;
+            	        osonpointer.p[0].startposy = osonmouse.startposy;
+                       osonpointer.p[0].startdeskoposx = osonmouse.startdeskoposx;
+                       osonpointer.p[0].startdeskoposy = osonmouse.startdeskoposy;
+                       osonpointer.p[0].startdeskposx = osonmouse.startdeskposx;
+                       osonpointer.p[0].startdeskposy = osonmouse.startdeskposy;                   	
+                   }
+               } else {
+                   osontouch.active = 0;
+               }
+               osonpointerdetectstart();
+           }
+
+           function osonmousedetectclick(evt) {
+           	   if (osontouch.active === 0) {
+           	       osonmouse.currentclick = new Date().getTime() ;
+           	       if (osonmouse.currentclick > osonmouse.lastclick+200 ){
+                       osonmouse.clickoposx = osonmouse.oposx;
+                       osonmouse.clickoposy = osonmouse.oposy;
+                       osonmouse.clickposx = osonmouse.posx;
+                       osonmouse.clickposy = osonmouse.posy;
+                       osonmouse.clickdeskoposx = osonmouse.deskoposx;
+                       osonmouse.clickdeskoposy = osonmouse.deskoposy;
+                       osonmouse.clickdeskposx = osonmouse.deskposx;
+                       osonmouse.clickdeskposy = osonmouse.deskposy;
+                       osonmouse.lastclick = osonmouse.currentclick;
+//              
+                                            
+                   }
+               }
+           }
+
+           function osonmousedetectmove() {
+
+               osonmouse.movedata.i++;
+               osonmouse.movedata.oposx[osonmouse.movedata.i] = osonmouse.oposx;
+            	osonmouse.movedata.oposy[osonmouse.movedata.i] = osonmouse.oposy;
+            	osonmouse.movedata.posx[osonmouse.movedata.i] = osonmouse.posx;
+            	osonmouse.movedata.posy[osonmouse.movedata.i] = osonmouse.posy;
+            	osonmouse.movedata.deskoposx[osonmouse.movedata.i] = osonmouse.deskoposx;
+            	osonmouse.movedata.deskoposy[osonmouse.movedata.i] = osonmouse.deskoposy;
+            	osonmouse.movedata.deskposx[osonmouse.movedata.i] = osonmouse.deskposx;
+               osonmouse.movedata.deskposy[osonmouse.movedata.i] = osonmouse.deskposy;
+               if(osonpointer.setup.onoff === 1){
+                       osonpointer.p[0].oposx = osonmouse.oposx;
+            	        osonpointer.p[0].oposy = osonmouse.oposy;
+            	        osonpointer.p[0].posx = osonmouse.posx;
+                       osonpointer.p[0].posy = osonmouse.posy;
+            	        osonpointer.p[0].movedata.oposx[osonmouse.movedata.i] = osonmouse.oposx;
+            	        osonpointer.p[0].movedata.oposy[osonmouse.movedata.i] = osonmouse.oposy;
+            	        osonpointer.p[0].movedata.posx[osonmouse.movedata.i] = osonmouse.posx;
+            	        osonpointer.p[0].movedata.posy[osonmouse.movedata.i] = osonmouse.posy;
+                       osonpointer.p[0].movedata.deskoposx[osonmouse.movedata.i] = osonmouse.deskoposx;
+                       osonpointer.p[0].movedata.deskoposy[osonmouse.movedata.i] = osonmouse.deskoposy;
+                       osonpointer.p[0].movedata.deskposx[osonmouse.movedata.i] = osonmouse.deskposx;
+                       osonpointer.p[0].movedata.deskposy[osonmouse.movedata.i] = osonmouse.deskposy;
+                       osonpointer.p[0].movedata.i = osonmouse.movedata.i;               	
+               }
+               osonpointerdetectmove();      
+           }
+
+           function osonmousedetectup(evt) {
+           	   if (osontouch.active === 0) {
+           	       osonmouse.currentclick = new Date().getTime() ;
+           	       if (osonmouse.currentclick > osonmouse.lastclick+200 ){
+                       osonmouse.clickoposx = osonmouse.oposx;
+                       osonmouse.clickoposy = osonmouse.oposy;
+                       osonmouse.clickposx = osonmouse.posx;
+                       osonmouse.clickposy = osonmouse.posy;
+                       osonmouse.clickdeskoposx = osonmouse.deskoposx;
+                       osonmouse.clickdeskoposy = osonmouse.deskoposy;
+                       osonmouse.clickdeskposx = osonmouse.deskposx;
+                       osonmouse.clickdeskposy = osonmouse.deskposy;
+                       osonmouse.lastclick = osonmouse.currentclick;
+                       osonmouse.catchin = 0;
+            	        if(osonpointer.setup.onoff === 1){
+            	            osonpointer.p[0].clickoposx = osonmouse.endoposx;
+            	            osonpointer.p[0].clickoposy = osonmouse.endoposy;
+            	            osonpointer.p[0].clickposx = osonmouse.endposx;
+            	            osonpointer.p[0].clickposy = osonmouse.endposy;
+                           osonpointer.p[0].clickdeskoposx = osonmouse.enddeskoposx;
+                           osonpointer.p[0].clickdeskoposy = osonmouse.enddeskoposy;
+                           osonpointer.p[0].clickdeskposx = osonmouse.enddeskposx;
+                           osonpointer.p[0].clickdeskposy = osonmouse.enddeskposy;
+            	                      	         	
+            	        }
+                   }
+                   osonmouse.endoposx = osonmouse.oposx;
+                   osonmouse.endoposy = osonmouse.oposy;
+                   osonmouse.endposx = osonmouse.posx;
+                   osonmouse.endposy = osonmouse.posy;
+                   osonmouse.enddeskoposx = osonmouse.deskoposx;
+                   osonmouse.enddeskoposy = osonmouse.deskoposy;
+                   osonmouse.enddeskposx = osonmouse.deskposx;
+                   osonmouse.enddeskposy = osonmouse.deskposy;
+                   if(osonpointer.setup.onoff === 1){
+            	        osonpointer.p[0].endoposx = osonmouse.endoposx;
+            	        osonpointer.p[0].endoposy = osonmouse.endoposy;
+            	        osonpointer.p[0].endposx = osonmouse.endposx;
+            	        osonpointer.p[0].endposy = osonmouse.endposy;
+                       osonpointer.p[0].enddeskoposx = osonmouse.enddeskoposx;
+                       osonpointer.p[0].enddeskoposy = osonmouse.enddeskoposy;
+                       osonpointer.p[0].enddeskposx = osonmouse.enddeskposx;
+                       osonpointer.p[0].enddeskposy = osonmouse.enddeskposy;                   	
+                   }
+               } else {
+                   osontouch.active = 0;
+               }
+               osonpointerdetectend();
+           }
+
+// touch
+            
+            var osontouch = {
+            	 active : 0,
+                settings : {
+                    fingers : 3,
+                      
+                },
+                p : new Array,
+            }
+
+            function osontouchmakearray(){
+            	 for (i = 0;osontouch.settings.fingers > i ; i++){
+                    osontouch.p[i] = {
+           	        posx : 0,
+           	        posy : 0,
+           	        oposx : 0,
+           	        oposy : 0,
+           	        deskoposx : 0,
+           	        deskoposy : 0,
+           	        deskposx : 0,
+           	        deskposy : 0,
+           	        startposx : 0,
+           	        startposy : 0,
+           	        startoposx : 0,
+           	        startoposy : 0,
+           	        startdeskposx : 0,
+           	        startdeskposy : 0,
+           	        startdeskoposx : 0,
+           	        startdeskoposy : 0,
+           	        endposx : 0,
+           	        endposy : 0,
+           	        endoposx : 0,
+           	        endoposy : 0,
+           	        enddeskposx : 0,
+           	        enddeskposy : 0,
+           	        enddeskoposx : 0,
+           	        enddeskoposy : 0,
+           	        clickposx : 0,
+           	        clickposy : 0,
+           	        lastclick : 0,
+           	        currentclick : 0,
+           	        active : 0,
+           	        movedata : {
+           	            posx : new Array,
+           	            posy : new Array,
+           	            oposx : new Array,
+           	            oposy : new Array,
+           	            deskoposx : new Array,
+           	            deskoposy : new Array,
+           	            deskposx : new Array,
+           	            deskposy : new Array,
+           	            i : 0
+           	       }
+                }
+            }
+         }
+        
+
+         osontouchmakearray();
+            function osontouchdetectstart(touchpos){
+                var touch = new Array;
+                osontouch.active = 1;
+                for (i = 0;osontouch.settings.fingers  > i ;i++){
+                    if ('undefined' !== typeof touchpos.targetTouches[i]) {
+            	         touch[i] = touchpos.targetTouches[i];
+            	         osontouch.p[i].startoposx = touch[i].pageX;
+            	         osontouch.p[i].startoposy = touch[i].pageY;
+            	         osontouch.p[i].startposx = parseInt(osontouch.p[i].startoposx/osonfit.scale);
+            	         osontouch.p[i].startposy = parseInt(osontouch.p[i].startoposy/osonfit.scale);
+            	         osontouch.p[i].startdeskoposx = parseInt(osontouch.p[i].startoposx-osonfit.marginleft);
+            	         osontouch.p[i].startdeskoposy = parseInt(osontouch.p[i].startoposy-osonfit.margintop);
+            	         osontouch.p[i].startdeskposx = parseInt(osontouch.p[i].startdeskoposx/osonfit.scale);
+            	         osontouch.p[i].startdeskposy = parseInt(osontouch.p[i].startdeskoposy/osonfit.scale);
+            	         osontouch.p[i].movedata.i = 0;
+            	         osontouch.p[i].movedata.oposx[0] = osontouch.p[i].ostartposx;
+            	         osontouch.p[i].movedata.oposy[0] = osontouch.p[i].ostartposy;
+            	         osontouch.p[i].movedata.posx[0] = osontouch.p[i].startposx;
+            	         osontouch.p[i].movedata.posy[0] = osontouch.p[i].startposy;
+            	         osontouch.p[i].movedata.deskposx[0] = osontouch.p[i].startdeskposx;
+            	         osontouch.p[i].movedata.deskposy[0] = osontouch.p[i].startdeskposy;
+            	         osontouch.p[i].movedata.deskoposx[0] = osontouch.p[i].startdeskoposx;
+            	         osontouch.p[i].movedata.deskoposy[0] = osontouch.p[i].startdeskoposy;
+            	         if(osonpointer.setup.onoff === 1){
+            	             osonpointer.p[i].startoposx = osontouch.p[i].startoposx;
+            	             osonpointer.p[i].startoposy = osontouch.p[i].startoposy;
+            	             osonpointer.p[i].startposx = osontouch.p[i].startposx;
+            	             osonpointer.p[i].startposy = osontouch.p[i].startposy;
+                            osonpointer.p[i].startdeskoposx = osontouch.p[i].startdeskoposx;
+                            osonpointer.p[i].startdeskoposy = osontouch.p[i].startdeskoposy;
+                            osonpointer.p[i].startdeskposx = osontouch.p[i].startdeskposx;
+                            osonpointer.p[i].startdeskposy = osontouch.p[i].startdeskposy;
+            	             osonpointer.p[i].movedata.oposx[0] = osontouch.p[i].oposx;
+            	             osonpointer.p[i].movedata.oposy[0] = osontouch.p[i].oposy;
+            	             osonpointer.p[i].movedata.posx[0] = osontouch.p[i].posx;
+            	             osonpointer.p[i].movedata.posy[0] = osontouch.p[i].posy;
+                            osonpointer.p[i].movedata.deskoposx[0] = osontouch.p[i].deskoposx;
+                            osonpointer.p[i].movedata.deskoposy[0] = osontouch.p[i].deskoposy;
+                            osonpointer.p[i].movedata.deskposx[0] = osontouch.p[i].deskposx;
+                            osonpointer.p[i].movedata.deskposy[0] = osontouch.p[i].deskposy;
+            	         }
+            	     }
+
+                }
+                osonpointerdetectstart();
+            	 
+            }
+
+            function osontouchdetectmove(touchpos){
+                var touch = new Array;
+                osontouch.active = 1;
+                for (i = 0;osontouch.settings.fingers > i; i++){
+                    if ('undefined' !== typeof touchpos.targetTouches[i]) {
+            	         touch[i] = touchpos.targetTouches[i];
+            	         if(!(osontouch.p[i].movedata.oposx[osontouch.p[i].movedata.i] === touch[i].pageX &&  osontouch.p[i].movedata.oposy[osontouch.p[i].movedata.i] === touch[i].pageY)){
+            	             osontouch.p[i].movedata.i++;
+            	             osontouch.p[i].movedata.oposx[osontouch.p[i].movedata.i] = touch[i].pageX;
+            	             osontouch.p[i].movedata.oposy[osontouch.p[i].movedata.i] = touch[i].pageY;
+            	             osontouch.p[i].movedata.posx[osontouch.p[i].movedata.i] = parseInt(touch[i].pageX/osonfit.scale);
+            	             osontouch.p[i].movedata.posy[osontouch.p[i].movedata.i] = parseInt(touch[i].pageY/osonfit.scale);
+            	             osontouch.p[i].movedata.deskoposx[osontouch.p[i].movedata.i] = parseInt(touch[i].pageX-osonfit.marginleft);
+            	             osontouch.p[i].movedata.deskoposy[osontouch.p[i].movedata.i] = parseInt(touch[i].pageY-osonfit.margintop);
+            	             osontouch.p[i].movedata.deskposx[osontouch.p[i].movedata.i] = parseInt(osontouch.p[i].movedata.deskoposx[osontouch.p[i].movedata.i]/osonfit.scale);
+            	             osontouch.p[i].movedata.deskposy[osontouch.p[i].movedata.i] = parseInt(osontouch.p[i].movedata.deskoposy[osontouch.p[i].movedata.i]/osonfit.scale);
+            	             if(osonpointer.setup.onoff === 1){
+            	             	  osonpointer.p[i].oposx = touch[i].pageX;
+            	             	  osonpointer.p[i].oposy = touch[i].pageY;
+            	                 osonpointer.p[i].posx = parseInt(touch[i].pageX/osonfit.scale);
+            	                 osonpointer.p[i].posy = parseInt(touch[i].pageY/osonfit.scale);
+            	                 osonpointer.p[i].movedata.oposx[osontouch.p[i].movedata.i] = osontouch.p[i].movedata.oposx[osontouch.p[i].movedata.i];
+            	                 osonpointer.p[i].movedata.oposy[osontouch.p[i].movedata.i] = osontouch.p[i].movedata.oposy[osontouch.p[i].movedata.i];
+            	                 osonpointer.p[i].movedata.posx[osontouch.p[i].movedata.i] = osontouch.p[i].movedata.posx[osontouch.p[i].movedata.i];
+            	                 osonpointer.p[i].movedata.posy[osontouch.p[i].movedata.i] = osontouch.p[i].movedata.posy[osontouch.p[i].movedata.i];
+            	                 osonpointer.p[i].movedata.deskoposx[osontouch.p[i].movedata.i] = osontouch.p[i].movedata.deskoposx[osontouch.p[i].movedata.i];
+                                osonpointer.p[i].movedata.deskoposy[osontouch.p[i].movedata.i] = osontouch.p[i].movedata.deskoposy[osontouch.p[i].movedata.i];
+            	                 osonpointer.p[i].movedata.deskposx[osontouch.p[i].movedata.i] = osontouch.p[i].movedata.deskposx[osontouch.p[i].movedata.i];
+                                osonpointer.p[i].movedata.deskposy[osontouch.p[i].movedata.i] = osontouch.p[i].movedata.deskposy[osontouch.p[i].movedata.i];
+                                osonpointer.p[0].movedata.i = osontouch.p[i].movedata.i;
+            	             }
+                        }
+                    }
+                }
+                osonpointerdetectmove();
+                touchpos.preventDefault();
+            }
+            
+            function osontouchdetectend(touchpos){
+                for (i = 0;osontouch.settings.fingers > i; i++){
+//                	   if ('undefined' !== typeof touchpos.targetTouches[i]){
+            	          osontouch.p[i].endoposx = osontouch.p[i].movedata.oposx[osontouch.p[i].movedata.i];
+            	          osontouch.p[i].endoposy = osontouch.p[i].movedata.oposy[osontouch.p[i].movedata.i];
+            	          osontouch.p[i].endposx = osontouch.p[i].movedata.posx[osontouch.p[i].movedata.i];
+            	          osontouch.p[i].endposy = osontouch.p[i].movedata.posy[osontouch.p[i].movedata.i];
+            	          osontouch.p[i].enddeskoposx = osontouch.p[i].movedata.deskoposx[osontouch.p[i].movedata.i];
+            	          osontouch.p[i].enddeskoposy = osontouch.p[i].movedata.deskoposy[osontouch.p[i].movedata.i];
+            	          osontouch.p[i].enddeskposx = osontouch.p[i].movedata.deskposx[osontouch.p[i].movedata.i];
+            	          osontouch.p[i].enddeskposy = osontouch.p[i].movedata.deskposy[osontouch.p[i].movedata.i];      	 
+            	          if(osonpointer.setup.onoff === 1){
+            	              osonpointer.p[i].endoposx = osontouch.p[i].endoposx;
+            	              osonpointer.p[i].endoposy = osontouch.p[i].endoposy;
+            	              osonpointer.p[i].endposx = osontouch.p[i].endposx;
+            	              osonpointer.p[i].endposy = osontouch.p[i].endposy;
+                             osonpointer.p[i].enddeskoposx = osontouch.p[i].enddeskoposx;
+                             osonpointer.p[i].enddeskoposy = osontouch.p[i].enddeskoposy;
+                             osonpointer.p[i].enddeskposx = osontouch.p[i].enddeskposx;
+                             osonpointer.p[i].enddeskposy = osontouch.p[i].enddeskposy;
+            	              osonpointer.p[i].clickoposx = osontouch.p[i].endoposx;
+            	              osonpointer.p[i].clickoposy = osontouch.p[i].endoposy;
+            	              osonpointer.p[i].clickposx = osontouch.p[i].endposx;
+            	              osonpointer.p[i].clickposy = osontouch.p[i].endposy;
+                             osonpointer.p[i].clickdeskoposx = osontouch.p[i].enddeskoposx;
+                             osonpointer.p[i].clickdeskoposy = osontouch.p[i].enddeskoposy;
+                             osonpointer.p[i].clickdeskposx = osontouch.p[i].enddeskposx;
+                             osonpointer.p[i].clickdeskposy = osontouch.p[i].enddeskposy;
+            	          }
+//                     }
+                }
+                osonpointerdetectend();
+                touchpos.preventDefault();
+            }
+
+
+//fit 
+
+
+            var osonfit = { 
+                scale : 1,            
+            }
 
                 var singer = {
                     singed : "none",
@@ -436,8 +1138,8 @@
                 }
         
                 function playerinterbarpos(pleng){
-                    var newpos = parseInt((player.timepos/pleng)*(320-12));
-                    document.getElementById("playerstatusbartrain").style.left = newpos.toString()+"px";
+                    osonslidermaxc("playerstatusbar", pleng);
+                    osonsliderchangedata("playerstatusbar", player.timepos);
                 }
                 setInterval(function (){netsend("refreshing", "none")}, 500);    
         </script>
