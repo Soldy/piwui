@@ -151,7 +151,7 @@ def omx_pause():
 def omx_seek(sec):
     global playerstat
     global omx 
-    omx.seek(self, offset):
+    omx.seek(sec)
        
 def omx_status():
     global playerstat
