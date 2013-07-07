@@ -57,9 +57,9 @@ class Getco:
         elif inpury.command=="seekto'":
             inpuy = web.input(fil = 'web')
             omx_seek(str(inpuy.fil))
-        elif inpury.command=="seek+30'":
+        elif inpury.command=="seek+30":
             omx.seek_forward_30()
-        elif inpury.command=="seek-30'":
+        elif inpury.command=="seek-30":
             omx.seek_backward_30()
         else:
             return "[{"+omx_status()+"},"+','.join(outputlist)+"]"
@@ -148,10 +148,10 @@ def omx_pause():
        omx.toggle_pause()
     return 1
 
-def omx_seek():
+def omx_seek(sec):
     global playerstat
     global omx 
-
+    omx.seek(self, offset):
        
 def omx_status():
     global playerstat
