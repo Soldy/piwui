@@ -281,6 +281,12 @@
                     playing : 0,
                     interval : "",
                     timepos:0,
+                    timerors:0,
+                    netrefreshtime:4000,
+                    intervals : {
+                        netref : "",
+                        timeref : "",                    
+                    }
                 }
                 function playerplay() {
                     if (singer.singed.toString() !=="none") {
@@ -374,8 +380,17 @@
                     if (singer.singed==="none" ) {
 	                     singer.singi = jsonom.singed;
 	                 }
-	                 var fsec = parseInt(jsonom.position/1000000);
-	                 player.timepos = fsec;
+	                 player.timerors = parseInt(jsonom.position/1000000);
+                }
+
+                function playerinterfacetimerint() {
+                    if (player.playing ===1) {
+                        player.timerors += 1;
+                    } else if(player.playing ===0){
+	                     player.timerors = 0;
+                    }
+	                 player.timepos = player.timerors;
+	                 fsec = player.timerors;
 	                 var hur = parseInt(fsec/3600);
 	                 var mun = parseInt((fsec-(hur*3600))/60);
 	                 var suc = (fsec-(hur*3600)-(mun*60));
@@ -402,8 +417,8 @@
                         outhtml += suc.toString();
                     }
 	                 document.getElementById("playerstatustimec").innerHTML= outhtml;
-	                 
                 }
+                player.intervals.timeref = setInterval(function (){playerinterfacetimerint()}, 1000);
 
                 function playerinterfacefl(pleng){playerinterbarpos(pleng)
 	                 var fsec = parseInt(pleng);
@@ -439,7 +454,7 @@
                     var newpos = parseInt((player.timepos/pleng)*(320-12));
                     document.getElementById("playerstatusbartrain").style.left = newpos.toString()+"px";
                 }
-                setInterval(function (){netsend("refreshing", "none")}, 500);    
+                player.intervals.netref = setInterval(function (){netsend("refreshing", "none")}, player.netrefreshtime);    
         </script>
     </body>
 </html>
