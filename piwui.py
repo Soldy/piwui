@@ -45,8 +45,10 @@ outputlist=[]
 
 class Getco:
     def POST(self):
+        timstart = int(time.time())
         global omx
         inpury = web.input(command = 'web')
+# command check
         if inpury.command=="play":
             inpuy = web.input(fil = 'web')
             omx_play(str(inpuy.fil))
@@ -62,8 +64,14 @@ class Getco:
         elif inpury.command=="seek-30":
             omx.seek_backward_30()
         else:
-            return "[{"+omx_status()+"},"+','.join(outputlist)+"]"
-        return "[{"+omx_status()+"}]"
+# output mixi pixi
+            outarray = "{"+omx_status()+"},"+','.join(outputlist) 
+            outarray = "{\"modul\":\"statistic\",\"timestart\":\""+str(timstart)+"\",\"timeend\":\""+str( int(time.time()))+"\"},"+outarray
+            return "["+outarray+"]"
+        outarray = "{"+omx_status()+"}"
+        outarray = "{\"modul\":\"statistic\",\"timestart\":\""+str(timstart)+"\",\"timeend\":\""+str( int(time.time()))+"\"},"+outarray
+        return "["+outarray+"]"
+#Temporaly ui send 
     def GET(self):
         page_file = open(os.path.join(PAGE_FOLDER,"t.html"),'r')
         pagea = page_file.read()
@@ -76,8 +84,6 @@ def omx_play(file):
     global playerstat
     global play_list
     global omx
-    #omx_send('q')
-    #time.sleep(0.5) #Possibly unneeded - crashing fixed by other means.
     if playerstat['playing'] == 1:
         omx_pause()
     else: 
