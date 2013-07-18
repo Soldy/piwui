@@ -56,7 +56,7 @@ class Getco:
             omx_stop()
         elif inpury.command=="pause":
             omx_pause()
-        elif inpury.command=="seekto'":
+        elif inpury.command=="seekto":
             inpuy = web.input(fil = 'web')
             omx_seek(str(inpuy.fil))
         elif inpury.command=="seek+30":

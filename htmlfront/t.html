@@ -286,6 +286,13 @@
                     intervals : {
                         netref : "",
                         timeref : "",                    
+                    },
+                    netp:{
+                       num: 0,
+                       av : new Array(),
+                       datst : new Date().getTime(),
+                       daten : new Date().getTime(),
+                       datpi : 0,
                     }
                 }
                 function playerplay() {
@@ -333,6 +340,8 @@
                         xhReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                         xhReq.onreadystatechange  = function(){
                             if (xhReq.readyState == 4){
+                                player.netp.daten =  new Date().getTime();
+                                player.netp.datpi = player.netp.daten - player.netp.datst;
                                 var jsonObj = JSON.parse(xhReq.responseText);
                                 singer.playlistnew = 0 ;                             
                                 for (i=0;jsonObj.length>i;i++) {
@@ -349,6 +358,7 @@
                                 }
                             }
                         }
+                        player.netp.datst =  new Date().getTime();
                         xhReq.send(outda);
                 }
                 
@@ -381,7 +391,19 @@
 	                     singer.singi = jsonom.singed;
 	                 }
 	                 player.timerors = parseInt(jsonom.position/1000000);
+// perfect time syncron "it's easy"
+                    var timejump = (parseInt((jsonom.position-(player.timerors*1000000))/1000)+parseInt(player.netp.datpi/2));
+                    timejump = timejump - parseInt(timejump/1000);
+                    clearInterval(player.intervals.timeref);
+	                 player.intervals.timeref = setInterval(function (){playertimejump()}, timejump);
                 }
+
+                function playertimejump() {
+                    playerinterfacetimerint();
+                    clearInterval(player.intervals.timeref);
+	                 player.intervals.timeref = setInterval(function (){playerinterfacetimerint()}, 1000);  
+                }
+
 
                 function playerinterfacetimerint() {
                     if (player.playing ===1) {
