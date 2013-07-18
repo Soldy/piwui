@@ -340,7 +340,9 @@
                         xhReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                         xhReq.onreadystatechange  = function(){
                             if (xhReq.readyState == 4){
+// package end timestamp
                                 player.netp.daten =  new Date().getTime();
+// ping :D
                                 player.netp.datpi = player.netp.daten - player.netp.datst;
                                 var jsonObj = JSON.parse(xhReq.responseText);
                                 singer.playlistnew = 0 ;                             
@@ -358,6 +360,7 @@
                                 }
                             }
                         }
+// package send timestamp
                         player.netp.datst =  new Date().getTime();
                         xhReq.send(outda);
                 }
@@ -391,9 +394,9 @@
 	                     singer.singi = jsonom.singed;
 	                 }
 	                 player.timerors = parseInt(jsonom.position/1000000);
-// perfect time syncron "it's easy"
+// perfect time syncron "it's easy" pts1
                     var timejump = (parseInt((jsonom.position-(player.timerors*1000000))/1000)+parseInt(player.netp.datpi/2));
-                    timejump = timejump - parseInt(timejump/1000);
+                    timejump = timejump - (parseInt(timejump/1000)*1000);
                     clearInterval(player.intervals.timeref);
 	                 player.intervals.timeref = setInterval(function (){playertimejump()}, timejump);
                 }
