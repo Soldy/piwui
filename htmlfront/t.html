@@ -398,7 +398,7 @@
                     var timejump = (parseInt((jsonom.position-(player.timerors*1000000))/1000)+parseInt(player.netp.datpi/2));
                     timejump = timejump - (parseInt(timejump/1000)*1000);
                     clearInterval(player.intervals.timeref);
-	                 player.intervals.timeref = setInterval(function (){playertimejump()}, timejump);
+	                 player.intervals.timeref = setInterval(function (){playertimejump()}, (1000-timejump));
                 }
 
                 function playertimejump() {
