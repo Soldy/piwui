@@ -6,236 +6,6 @@
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <title>
         </title>
-        <style type='text/css'>
-            body{
-                 height:100%;
-                 width:100%;
-                 margin:0;			
-                 overflow:hidden;
-                 background:#000;
-            }
-			   div{
-                -webkit-touch-callout: none;
-                -webkit-user-select: none;
-                -khtml-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                -icab-user-select: none;
-                -o-user-select: none;
-                user-select: none;			   
-			   }
-            .desktopbigclass{
-                 float:left;
-                 width:320px;
-            	  height:420px;
-            	  background: #262626;
-            	  box-shadow: 0px 0px 60px 80px #050505 inset;
-                 
-            }
-            .playerline{
-                 height:48px;
-                 width:320px;           
-                 border-top: 2px solid #2989d8;
-            }
-            .playerlist{
-                 height:330px;
-                 width:320px;           
-                 overflow-y:auto;
-                 overflow-x:hidden;
-            }
-            .playerelement{
-                 height:18px;
-                 width:320px;           
-                 color:#2989d8;
-                 font-weight:bold;
-                 font-size:16px;
-                 overflow:hidden;
-                 cursor:pointer;
-            }
-            .playerelementsing{           
-                 color:#000;
-                 background: #2989d8;
-                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
-                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
-                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
-            }
-            .playerstatustime{ 
-                 height:20px;
-                 width:320px;
-                 color:#2989d8;
-                 font-weight:bold;
-                 font-size:16px;
-            }
-            .playerstatustimec{
-                 float:left; 
-                 height:20px;
-                 width:160px;
-                 color:#2989d8;
-                 font-weight:bold;
-                 font-size:16px;
-                 cursor:default;
-            }
-            .playerstatustimef{ 
-                 float:left;
-                 height:20px;
-                 width:160px;
-                 color:#2989d8;
-                 font-weight:bold;
-                 font-size:16px;
-                 text-align:right;
-                 cursor:default;
-            }
-            .playerstatusbar{
-                 position:static;
-                 height:20px;
-                 width:320px;
-            }
-            .playerstatusbarrail{ 
-                 position:relative;
-                 top:9px;
-                 height:2px;
-                 width:320px;
-                 background:#2989d8;
-                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
-                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
-                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
-            }
-            .playerstatusbartrain{
-                 position:relative;
-                 top:2px;
-                 height:12px;
-                 width:12px;
-                 background:#2989d8;
-                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
-                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
-                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
-            }
-            .playerbutton{
-                 float:left;
-                 margin-top:10px;
-                 margin-left:11px;
-                 height:30px;
-                 width:50px;
-                 color:#000;
-                 text-align:center;
-                 font-size: 24px;
-                 font-weight:bold;
-                 cursor:pointer;
-                 background: #1e5799;
-                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
-                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
-                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
-                 -webkit-border-radius: 3px;
-                 -moz-border-radius: 3px;
-                 border-radius: 3px;
-            }
-            .playerplayarrow{
-                 margin-top:5px;
-                 margin-left:17px;
-                 width:0; 
-                 height:0; 
-                 border-top: 10px solid transparent;
-                 border-bottom: 10px solid transparent; 
-                 border-left:20px solid #000; 
-            }
-            .playerstoparrow{
-                 margin-top:5px;
-                 margin-left:15px;
-                 width:20px; 
-                 height:20px;
-                 background:#000; 
-            }
-            .playerpausearrow{
-                 margin-top:5px;
-                 margin-left:15px;
-                 width:10px; 
-                 height:20px;
-                 background:transparent;
-                 border-left:5px solid #000;
-                 border-right:5px solid #000;
-            }
-            .playerffaarrow{
-                 position:absolute;
-                 margin-top:5px;
-                 margin-left:10px;
-                 z-index:98;
-                 width:0; 
-                 height:0; 
-                 border-top: 10px solid transparent;
-                 border-bottom: 10px solid transparent; 
-                 border-left:20px solid #000; 
-            }
-            .playerffbarrow{
-                 position:absolute;
-                 margin-top:5px;
-                 margin-left:25px;
-                 z-index:99;
-                 width:0; 
-                 height:0; 
-                 border-top: 10px solid transparent;
-                 border-bottom: 10px solid transparent; 
-                 border-left:20px solid #000; 
-            }
-            .playerfbaarrow{
-                 position:absolute;
-                 margin-top:5px;
-                 margin-left:5px;
-                 width:0; 
-                 height:0; 
-                 border-top: 10px solid transparent;
-                 border-bottom: 10px solid transparent; 
-                 border-right:20px solid #000; 
-            }
-            .playerfbbarrow{
-                 position:absolute;
-                 margin-top:5px;
-                 margin-left:20px;
-                 width:0; 
-                 height:0; 
-                 border-top: 10px solid transparent;
-                 border-bottom: 10px solid transparent; 
-                 border-right:20px solid #000; 
-            }
-        </style>
-    </head>
-    <body>
-        <div  class="desktopbigclass" id="desktopbigclass">
-        <div  class="playerbox" id="playerbox">
-            <div  class="playerlist" id="playerlist">
-            </div>
-            <div  class="playerstatustime" id="playerstatustime">
-                <div  class="playerstatustimec" id="playerstatustimec">00:00:00</div>
-                <div  class="playerstatustimef" id="playerstatustimef">00:00:00</div>
-            </div>
-            <div class="playerstatusbar" id="playerstatusbar">
-                <div  class="playerstatusbarrail" id="playerstatusbarrail"></div>
-                <div  class="playerstatusbartrain" id="playerstatusbartrain"></div>
-            </div>
-            <div  class="playerline">
-                 <div  class="playerbutton" id="playerbuttonfb" onclick="playerfb()"><div class="playerfbaarrow"></div><div class="playerfbbarrow"></div></div>
-                 <div  class="playerbutton" id="playerbuttonp" onclick="playerplay()"><div class="playerplayarrow"></div></div>
-                 <div  class="playerbutton" id="playerbuttons" onclick="playerstop()"><div class="playerstoparrow"></div></div>
-                 <div  class="playerbutton" id="playerbuttonff" onclick="playerff()"><div class="playerffaarrow"></div><div class="playerffbarrow"></div></div>
-                 <div  class="playerbutton">S</div>
-            </div>
-            </div>
-        </div>
         <script type='text/javascript'>
 // mobil extra 
 
@@ -481,5 +251,235 @@
                 }
                 player.intervals.netref = setInterval(function (){netsend("refreshing", "none")}, player.netrefreshtime);    
         </script>
+        <style type='text/css'>
+            body{
+                 height:100%;
+                 width:100%;
+                 margin:0;			
+                 overflow:hidden;
+                 background:#000;
+            }
+			   div{
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                -icab-user-select: none;
+                -o-user-select: none;
+                user-select: none;			   
+			   }
+            .desktopbigclass{
+                 float:left;
+                 width:320px;
+            	  height:420px;
+            	  background: #262626;
+            	  box-shadow: 0px 0px 60px 80px #050505 inset;
+                 
+            }
+            .playerline{
+                 height:48px;
+                 width:320px;           
+                 border-top: 2px solid #2989d8;
+            }
+            .playerlist{
+                 height:330px;
+                 width:320px;           
+                 overflow-y:auto;
+                 overflow-x:hidden;
+            }
+            .playerelement{
+                 height:18px;
+                 width:320px;           
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 overflow:hidden;
+                 cursor:pointer;
+            }
+            .playerelementsing{           
+                 color:#000;
+                 background: #2989d8;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+            }
+            .playerstatustime{ 
+                 height:20px;
+                 width:320px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+            }
+            .playerstatustimec{
+                 float:left; 
+                 height:20px;
+                 width:160px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 cursor:default;
+            }
+            .playerstatustimef{ 
+                 float:left;
+                 height:20px;
+                 width:160px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 text-align:right;
+                 cursor:default;
+            }
+            .playerstatusbar{
+                 position:static;
+                 height:20px;
+                 width:320px;
+            }
+            .playerstatusbarrail{ 
+                 position:relative;
+                 top:9px;
+                 height:2px;
+                 width:320px;
+                 background:#2989d8;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+            }
+            .playerstatusbartrain{
+                 position:relative;
+                 top:2px;
+                 height:12px;
+                 width:12px;
+                 background:#2989d8;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+            }
+            .playerbutton{
+                 float:left;
+                 margin-top:10px;
+                 margin-left:11px;
+                 height:30px;
+                 width:50px;
+                 color:#000;
+                 text-align:center;
+                 font-size: 24px;
+                 font-weight:bold;
+                 cursor:pointer;
+                 background: #1e5799;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+                 -webkit-border-radius: 3px;
+                 -moz-border-radius: 3px;
+                 border-radius: 3px;
+            }
+            .playerplayarrow{
+                 margin-top:5px;
+                 margin-left:17px;
+                 width:0; 
+                 height:0; 
+                 border-top: 10px solid transparent;
+                 border-bottom: 10px solid transparent; 
+                 border-left:20px solid #000; 
+            }
+            .playerstoparrow{
+                 margin-top:5px;
+                 margin-left:15px;
+                 width:20px; 
+                 height:20px;
+                 background:#000; 
+            }
+            .playerpausearrow{
+                 margin-top:5px;
+                 margin-left:15px;
+                 width:10px; 
+                 height:20px;
+                 background:transparent;
+                 border-left:5px solid #000;
+                 border-right:5px solid #000;
+            }
+            .playerffaarrow{
+                 position:absolute;
+                 margin-top:5px;
+                 margin-left:10px;
+                 z-index:98;
+                 width:0; 
+                 height:0; 
+                 border-top: 10px solid transparent;
+                 border-bottom: 10px solid transparent; 
+                 border-left:20px solid #000; 
+            }
+            .playerffbarrow{
+                 position:absolute;
+                 margin-top:5px;
+                 margin-left:25px;
+                 z-index:99;
+                 width:0; 
+                 height:0; 
+                 border-top: 10px solid transparent;
+                 border-bottom: 10px solid transparent; 
+                 border-left:20px solid #000; 
+            }
+            .playerfbaarrow{
+                 position:absolute;
+                 margin-top:5px;
+                 margin-left:5px;
+                 width:0; 
+                 height:0; 
+                 border-top: 10px solid transparent;
+                 border-bottom: 10px solid transparent; 
+                 border-right:20px solid #000; 
+            }
+            .playerfbbarrow{
+                 position:absolute;
+                 margin-top:5px;
+                 margin-left:20px;
+                 width:0; 
+                 height:0; 
+                 border-top: 10px solid transparent;
+                 border-bottom: 10px solid transparent; 
+                 border-right:20px solid #000; 
+            }
+        </style>
+    </head>
+    <body>
+        <div  class="desktopbigclass" id="desktopbigclass">
+        <div  class="playerbox" id="playerbox">
+            <div  class="playerlist" id="playerlist">
+            </div>
+            <div  class="playerstatustime" id="playerstatustime">
+                <div  class="playerstatustimec" id="playerstatustimec">00:00:00</div>
+                <div  class="playerstatustimef" id="playerstatustimef">00:00:00</div>
+            </div>
+            <div class="playerstatusbar" id="playerstatusbar">
+                <div  class="playerstatusbarrail" id="playerstatusbarrail"></div>
+                <div  class="playerstatusbartrain" id="playerstatusbartrain"></div>
+            </div>
+            <div  class="playerline">
+                 <div  class="playerbutton" id="playerbuttonfb" onclick="playerfb()"><div class="playerfbaarrow"></div><div class="playerfbbarrow"></div></div>
+                 <div  class="playerbutton" id="playerbuttonp" onclick="playerplay()"><div class="playerplayarrow"></div></div>
+                 <div  class="playerbutton" id="playerbuttons" onclick="playerstop()"><div class="playerstoparrow"></div></div>
+                 <div  class="playerbutton" id="playerbuttonff" onclick="playerff()"><div class="playerffaarrow"></div><div class="playerffbarrow"></div></div>
+                 <div  class="playerbutton">S</div>
+            </div>
+            </div>
+        </div>
     </body>
 </html>
