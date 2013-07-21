@@ -122,8 +122,10 @@
                                 jsonObj.name;
                                 if (singer.playlistnew >0){
                                     playerlistmake();
-                                    playerinterfacefl(singer.playlistbyid[singer.singi].lengt);
-                                    playerinterbarpos(singer.playlistbyid[singer.singi].lengt);
+                                    if (singer.playlistbyid[singer.singi]!==undefined){
+                                        playerinterfacefl(singer.playlistbyid[singer.singi].lengt);
+                                        playerinterbarpos(singer.playlistbyid[singer.singi].lengt);
+                                    }
                                     if (singer.singed.toString() === "none"){
                                         singerpush(singer.singi)
                                     }
