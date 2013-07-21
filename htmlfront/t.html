@@ -52,6 +52,7 @@
                     interval : "",
                     timepos:0,
                     timerors:0,
+                    trains : 320,
                     netrefreshtime:4000,
                     intervals : {
                         netref : "",
@@ -63,6 +64,10 @@
                        datst : new Date().getTime(),
                        daten : new Date().getTime(),
                        datpi : 0,
+                    },
+                    html : {
+                        vert:"<div class='desktopbigclassv' id='desktopbigclass'><div class='playerboxv' id='playerbox'><div class='playerlistv' id='playerlist'></div><div class='playerstatustimev' id='playerstatustime'><div class='playerstatustimecv' id='playerstatustimec'>00:00:00</div><div class='playerstatustimefv' id='playerstatustimef'>00:00:00</div></div><div class='playerstatusbarv' id='playerstatusbar'><div class='playerstatusbarrailv' id='playerstatusbarrail'></div><div class='playerstatusbartrainv' id='playerstatusbartrain'></div></div><div class='playerlinev'><div class='playerbutton' id='playerbuttonfb' onclick='playerfb()'><div class='playerfbaarrow'></div><div class='playerfbbarrow'></div></div><div class='playerbutton' id='playerbuttonp' onclick='playerplay()'><div class='playerplayarrow'></div></div><div class='playerbutton' id='playerbuttons' onclick='playerstop()'><div class='playerstoparrow'></div></div><div class='playerbutton' id='playerbuttonff' onclick='playerff()'><div class='playerffaarrow'></div><div class='playerffbarrow'></div></div><div  class='playerbutton'>S</div></div></div></div>",
+                        hor:"<div class='desktopbigclassh' id='desktopbigclass'><div class='playerboxh' id='playerbox'><div  class='playerlisth' id='playerlist'></div><div  class='playerstatustimeh' id='playerstatustime'><div  class='playerstatustimech' id='playerstatustimec'>00:00:00</div><div class='playerstatustimefh' id='playerstatustimef'>00:00:00</div></div><div class='playerstatusbarh' id='playerstatusbar'><div  class='playerstatusbarrailh' id='playerstatusbarrail'></div><div class='playerstatusbartrainh' id='playerstatusbartrain'></div></div><div class='playerlineh'><div class='playerbutton' id='playerbuttonfb' onclick='playerfb()'><div class='playerfbaarrow'></div><div class='playerfbbarrow'></div></div><div  class='playerbutton' id='playerbuttonp' onclick='playerplay()'><div class='playerplayarrow'></div></div><div class='playerbutton' id='playerbuttons' onclick='playerstop()'><div class='playerstoparrow'></div></div><div class='playerbutton' id='playerbuttonff' onclick='playerff()'><div class='playerffaarrow'></div><div class='playerffbarrow'></div></div><div  class='playerbutton'>S</div></div></div></div>",              
                     }
                 }
                 function playerplay() {
@@ -246,12 +251,15 @@
                     }
 	                 document.getElementById("playerstatustimef").innerHTML= outhtml;   
                 }
+       
+
         
                 function playerinterbarpos(pleng){
-                    var newpos = parseInt((player.timepos/pleng)*(320-12));
+                    var newpos = parseInt((player.timepos/pleng)*(player.trains-12));
                     document.getElementById("playerstatusbartrain").style.left = newpos.toString()+"px";
                 }
-                player.intervals.netref = setInterval(function (){netsend("refreshing", "none")}, player.netrefreshtime);    
+                player.intervals.netref = setInterval(function (){netsend("refreshing", "none")}, player.netrefreshtime);
+                
         </script>
         <style type='text/css'>
             body{
@@ -277,11 +285,36 @@
             	  height:420px;
             	  background: #262626;
             	  box-shadow: 0px 0px 60px 80px #050505 inset;
+            	  display:none;
                  
+            }
+            .desktopbigclassv{
+                 float:left;
+                 width:320px;
+            	  height:420px;
+            	  background: #262626;
+            	  box-shadow: 0px 0px 60px 80px #050505 inset;
+            }
+            .desktopbigclassh{
+                 float:left;
+                 width:420px;
+            	  height:320px;
+            	  background: #262626;
+            	  box-shadow: 0px 0px 60px 80px #050505 inset;
             }
             .playerline{
                  height:48px;
                  width:320px;           
+                 border-top: 2px solid #2989d8;
+            }
+            .playerlinev{
+                 height:48px;
+                 width:320px;           
+                 border-top: 2px solid #2989d8;
+            }
+            .playerlineh{
+                 height:48px;
+                 width:420px;           
                  border-top: 2px solid #2989d8;
             }
             .playerlist{
@@ -290,9 +323,39 @@
                  overflow-y:auto;
                  overflow-x:hidden;
             }
+            .playerlistv{
+                 height:330px;
+                 width:320px;           
+                 overflow-y:auto;
+                 overflow-x:hidden;
+            }
+            .playerlisth{
+                 height:230px;
+                 width:420px;           
+                 overflow-y:auto;
+                 overflow-x:hidden;
+            }
             .playerelement{
                  height:18px;
                  width:320px;           
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 overflow:hidden;
+                 cursor:pointer;
+            }
+            .playerelementv{
+                 height:18px;
+                 width:320px;           
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 overflow:hidden;
+                 cursor:pointer;
+            }
+            .playerelementh{
+                 height:18px;
+                 width:420px;           
                  color:#2989d8;
                  font-weight:bold;
                  font-size:16px;
@@ -312,7 +375,21 @@
             }
             .playerstatustime{ 
                  height:20px;
+                 width:420px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+            }
+            .playerstatustimev{ 
+                 height:20px;
                  width:320px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+            }
+            .playerstatustimeh{ 
+                 height:20px;
+                 width:420px;
                  color:#2989d8;
                  font-weight:bold;
                  font-size:16px;
@@ -321,6 +398,24 @@
                  float:left; 
                  height:20px;
                  width:160px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 cursor:default;
+            }
+            .playerstatustimecv{
+                 float:left; 
+                 height:20px;
+                 width:160px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 cursor:default;
+            }
+            .playerstatustimech{
+                 float:left; 
+                 height:20px;
+                 width:210px;
                  color:#2989d8;
                  font-weight:bold;
                  font-size:16px;
@@ -336,16 +431,74 @@
                  text-align:right;
                  cursor:default;
             }
+            .playerstatustimefv{ 
+                 float:left;
+                 height:20px;
+                 width:160px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 text-align:right;
+                 cursor:default;
+            }
+            .playerstatustimefh{ 
+                 float:left;
+                 height:20px;
+                 width:210px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 text-align:right;
+                 cursor:default;
+            }
             .playerstatusbar{
                  position:static;
                  height:20px;
                  width:320px;
+            }
+            .playerstatusbarv{
+                 position:static;
+                 height:20px;
+                 width:320px;
+            }
+            .playerstatusbarh{
+                 position:static;
+                 height:20px;
+                 width:420px;
             }
             .playerstatusbarrail{ 
                  position:relative;
                  top:9px;
                  height:2px;
                  width:320px;
+                 background:#2989d8;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+            }
+            .playerstatusbarrailv{ 
+                 position:relative;
+                 top:9px;
+                 height:2px;
+                 width:320px;
+                 background:#2989d8;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+            }
+            .playerstatusbarrailh{ 
+                 position:relative;
+                 top:9px;
+                 height:2px;
+                 width:420px;
                  background:#2989d8;
                  background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
                  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
@@ -462,26 +615,8 @@
         </style>
     </head>
     <body>
-        <div  class="desktopbigclass" id="desktopbigclass">
-        <div  class="playerbox" id="playerbox">
-            <div  class="playerlist" id="playerlist">
-            </div>
-            <div  class="playerstatustime" id="playerstatustime">
-                <div  class="playerstatustimec" id="playerstatustimec">00:00:00</div>
-                <div  class="playerstatustimef" id="playerstatustimef">00:00:00</div>
-            </div>
-            <div class="playerstatusbar" id="playerstatusbar">
-                <div  class="playerstatusbarrail" id="playerstatusbarrail"></div>
-                <div  class="playerstatusbartrain" id="playerstatusbartrain"></div>
-            </div>
-            <div  class="playerline">
-                 <div  class="playerbutton" id="playerbuttonfb" onclick="playerfb()"><div class="playerfbaarrow"></div><div class="playerfbbarrow"></div></div>
-                 <div  class="playerbutton" id="playerbuttonp" onclick="playerplay()"><div class="playerplayarrow"></div></div>
-                 <div  class="playerbutton" id="playerbuttons" onclick="playerstop()"><div class="playerstoparrow"></div></div>
-                 <div  class="playerbutton" id="playerbuttonff" onclick="playerff()"><div class="playerffaarrow"></div><div class="playerffbarrow"></div></div>
-                 <div  class="playerbutton">S</div>
-            </div>
-            </div>
-        </div>
+        <script type="text/javascript">
+            document.getElementsByTagName("body")[0].innerHTML = player.html.vert;
+        </script>
     </body>
 </html>
