@@ -56,8 +56,14 @@
                     netrefreshtime:4000,
                     intervals : {
                         netref : "",
-                        timeref : "",                    
+                        timeref : "",
+                        flip : "",
                     },
+                    wid:0,
+                    heg:0,
+                    wido:0,
+                    hego:0,
+                    flip:"v",
                     netp:{
                        num: 0,
                        av : new Array(),
@@ -259,6 +265,44 @@
                     document.getElementById("playerstatusbartrain").style.left = newpos.toString()+"px";
                 }
                 player.intervals.netref = setInterval(function (){netsend("refreshing", "none")}, player.netrefreshtime);
+
+                function playerflipinterval(){
+                    if (document.body && document.body.offsetWidth) {
+                        player.wid = document.body.offsetWidth;
+                        player.heg = document.body.offsetHeight;
+                    }
+                    if (document.compatMode=='CSS1Compat' &&
+                    document.documentElement &&
+                    document.documentElement.offsetWidth ) {
+                        player.wid = document.documentElement.offsetWidth;
+                        player.heg = document.documentElement.offsetHeight;
+                    }
+                    if (window.innerWidth && window.innerHeight) {
+                        player.wid = window.innerWidth;
+                        player.heg = window.innerHeight;
+                    }
+                
+                    if (player.wid != player.wido  || player.heg != player.hego){
+                        if (player.flip==="v"){
+                            if (player.wid>player.heg){
+                                player.train =420;
+                                player.flip="h";
+                                document.getElementsByTagName("body")[0].innerHTML = player.html.hor;
+                            }
+                        }else{
+                            if (player.heg>player.wid){
+                                player.train =320;
+                                player.flip="v";
+                                document.getElementsByTagName("body")[0].innerHTML = player.html.vert;
+                            }
+                        }
+                        player.wido = player.wid;
+                        player.hego = player.heg;
+                    }
+               
+                } 
+
+                player.intervals.flip = setInterval(function (){playerflipinterval()}, 1000);
                 
         </script>
         <style type='text/css'>
@@ -314,7 +358,8 @@
             }
             .playerlineh{
                  height:48px;
-                 width:420px;           
+                 width:370px;
+                 padding-left:50px;
                  border-top: 2px solid #2989d8;
             }
             .playerlist{
