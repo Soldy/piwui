@@ -32,14 +32,26 @@
                 function singerpush(pushed) {
                     var cuid = document.getElementById("playerelement"+pushed.toString());
                     if (singer.singed.toString() === pushed.toString()){
-                        cuid.className = "playerelemen";
+                        if (player.flip === "v"){
+                            cuid.className = "playerelementv";
+                        } else { 
+                            cuid.className = "playerelementh";
+                        }
                         singer.singed = "none";
                     }else {
                         if (singer.singed.toString() !== "none"){
                             var siid = document.getElementById("playerelement"+singer.singed.toString());
-                            siid.className = "playerelement";
+                            if (player.flip === "v"){
+                                siid.className = "playerelementv";
+                            } else {
+	                             siid.className = "playerelementh";
+                            }
                         }
-                        cuid.className = "playerelement playerelementsing";
+                        if (player.flip === "v"){
+   	                      cuid.className = "playerelementv playerelementsing";
+   	                  } else {
+   	                      cuid.className = "playerelementh playerelementsing";  	                    
+  	                     }
                         singer.singed = pushed.toString();
                     }
                     singer.singi = singer.singed ;
@@ -99,8 +111,12 @@
                 function playerlistmake() {
 	                  var outhtml="";
 	                  for (i=0; singer.playlist.length > i ; i++ ) {
-	                       outhtml+="<div  class='playerelement ";
-	                       if (singer.singed === singer.playlist[i].id){
+	                       if (player.flip === "v"){
+   	                       outhtml+="<div  class='playerelementv ";
+   	                    } else {
+   	                       outhtml+="<div  class='playerelementh ";   	                    
+   	                    }
+ 	                       if (singer.singed === singer.playlist[i].id){
 	                           outhtml+="playerelementsing";
 	                       }
 	                       outhtml+="' id='playerelement"+singer.playlist[i].id+"' onclick='singerpush("+singer.playlist[i].id+")'>"+singer.playlist[i].nam+"</div>";
