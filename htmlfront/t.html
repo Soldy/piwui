@@ -339,15 +339,6 @@
                 -o-user-select: none;
                 user-select: none;			   
 			   }
-            .desktopbigclass{
-                 float:left;
-                 width:320px;
-            	  height:420px;
-            	  background: #262626;
-            	  box-shadow: 0px 0px 60px 80px #050505 inset;
-            	  display:none;
-                 
-            }
             .desktopbigclassv{
                  float:left;
                  width:320px;
@@ -677,7 +668,34 @@
     </head>
     <body>
         <script type="text/javascript">
-            document.getElementsByTagName("body")[0].innerHTML = player.html.vert;
+
+                    if (document.body && document.body.offsetWidth) {
+                        player.wid = document.body.offsetWidth;
+                        player.heg = document.body.offsetHeight;
+                    }
+                    if (document.compatMode=='CSS1Compat' &&
+                    document.documentElement &&
+                    document.documentElement.offsetWidth ) {
+                        player.wid = document.documentElement.offsetWidth;
+                        player.heg = document.documentElement.offsetHeight;
+                    }
+                    if (window.innerWidth && window.innerHeight) {
+                        player.wid = window.innerWidth;
+                        player.heg = window.innerHeight;
+                    }
+                
+                        if (player.wid>player.heg){
+                                player.train =420;
+                                player.flip="h";
+                                document.getElementsByTagName("body")[0].innerHTML = player.html.hor;
+                        }
+                        if (player.heg>player.wid){
+                                player.train =320;
+                                player.flip="v";
+                                document.getElementsByTagName("body")[0].innerHTML = player.html.vert;
+                        }
+                        player.wido = player.wid;
+                        player.hego = player.heg;
         </script>
     </body>
 </html>
