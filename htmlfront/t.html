@@ -67,7 +67,8 @@
                     trains : 320,
                     netrefreshtime:4000,
                     error:{
-                       showcon:0,                    
+                       showcon:0, 
+                       show500:0,                    
                     },
                     intervals : {
                         netref : "",
@@ -87,8 +88,8 @@
                        datpi : 0,
                     },
                     html : {
-                        vert:"<div class='desktopbigclassv' id='desktopbigclass'><div class='playerboxv' id='playerbox'><div class='playerlistv' id='playerlist'></div><div class='playerstatustimev' id='playerstatustime'><div class='playerstatustimecv' id='playerstatustimec'>00:00:00</div><div class='playerstatustimefv' id='playerstatustimef'>00:00:00</div></div><div class='playerstatusbarv' id='playerstatusbar'><div class='playerstatusbarrailv' id='playerstatusbarrail'></div><div class='playerstatusbartrain' id='playerstatusbartrain'></div></div><div class='playerlinev'><div class='playerbutton' id='playerbuttonfb' onclick='playerfb()'><div class='playerfbaarrow'></div><div class='playerfbbarrow'></div></div><div class='playerbutton' id='playerbuttonp' onclick='playerplay()'><div class='playerplayarrow'></div></div><div class='playerbutton' id='playerbuttons' onclick='playerstop()'><div class='playerstoparrow'></div></div><div class='playerbutton' id='playerbuttonff' onclick='playerff()'><div class='playerffaarrow'></div><div class='playerffbarrow'></div></div><div  class='playerbutton'>S</div></div></div></div><div class='playererrorvert'>Connection<br>Error</div>",
-                        hor:"<div class='desktopbigclassh' id='desktopbigclass'><div class='playerboxh' id='playerbox'><div  class='playerlisth' id='playerlist'></div><div  class='playerstatustimeh' id='playerstatustime'><div  class='playerstatustimech' id='playerstatustimec'>00:00:00</div><div class='playerstatustimefh' id='playerstatustimef'>00:00:00</div></div><div class='playerstatusbarh' id='playerstatusbar'><div  class='playerstatusbarrailh' id='playerstatusbarrail'></div><div class='playerstatusbartrain' id='playerstatusbartrain'></div></div><div class='playerlineh'><div class='playerbutton' id='playerbuttonfb' onclick='playerfb()'><div class='playerfbaarrow'></div><div class='playerfbbarrow'></div></div><div  class='playerbutton' id='playerbuttonp' onclick='playerplay()'><div class='playerplayarrow'></div></div><div class='playerbutton' id='playerbuttons' onclick='playerstop()'><div class='playerstoparrow'></div></div><div class='playerbutton' id='playerbuttonff' onclick='playerff()'><div class='playerffaarrow'></div><div class='playerffbarrow'></div></div><div  class='playerbutton'>S</div></div></div></div><div class='playererrorhor'>Connection Error</div>",              
+                        vert:"<div class='desktopbigclassv' id='desktopbigclass'><div class='playerboxv' id='playerbox'><div class='playerlistv' id='playerlist'></div><div class='playerstatustimev' id='playerstatustime'><div class='playerstatustimecv' id='playerstatustimec'>00:00:00</div><div class='playerstatustimefv' id='playerstatustimef'>00:00:00</div></div><div class='playerstatusbarv' id='playerstatusbar'><div class='playerstatusbarrailv' id='playerstatusbarrail'></div><div class='playerstatusbartrain' id='playerstatusbartrain'></div></div><div class='playerlinev'><div class='playerbutton' id='playerbuttonfb' onclick='playerfb()'><div class='playerfbaarrow'></div><div class='playerfbbarrow'></div></div><div class='playerbutton' id='playerbuttonp' onclick='playerplay()'><div class='playerplayarrow'></div></div><div class='playerbutton' id='playerbuttons' onclick='playerstop()'><div class='playerstoparrow'></div></div><div class='playerbutton' id='playerbuttonff' onclick='playerff()'><div class='playerffaarrow'></div><div class='playerffbarrow'></div></div><div  class='playerbutton'>S</div></div></div></div><div class='playererrorvert'>Connection<br>Error</div><div class='playererror500vert'>Server<br>Error</div>",
+                        hor:"<div class='desktopbigclassh' id='desktopbigclass'><div class='playerboxh' id='playerbox'><div  class='playerlisth' id='playerlist'></div><div  class='playerstatustimeh' id='playerstatustime'><div  class='playerstatustimech' id='playerstatustimec'>00:00:00</div><div class='playerstatustimefh' id='playerstatustimef'>00:00:00</div></div><div class='playerstatusbarh' id='playerstatusbar'><div  class='playerstatusbarrailh' id='playerstatusbarrail'></div><div class='playerstatusbartrain' id='playerstatusbartrain'></div></div><div class='playerlineh'><div class='playerbutton' id='playerbuttonfb' onclick='playerfb()'><div class='playerfbaarrow'></div><div class='playerfbbarrow'></div></div><div  class='playerbutton' id='playerbuttonp' onclick='playerplay()'><div class='playerplayarrow'></div></div><div class='playerbutton' id='playerbuttons' onclick='playerstop()'><div class='playerstoparrow'></div></div><div class='playerbutton' id='playerbuttonff' onclick='playerff()'><div class='playerffaarrow'></div><div class='playerffbarrow'></div></div><div  class='playerbutton'>S</div></div></div></div><div class='playererrorhor'>Connection Error</div><div class='playererror500hor'>Server Error</div>",              
                     }
                 }
                 function playerplay() {
@@ -145,6 +146,7 @@
                             if (xhReq.readyState == 4){
                                 if (xhReq.status == 200){
                                     playererrorconhid();
+                                    playererror500hid();
 // package end timestamp
                                     player.netp.daten =  new Date().getTime();
 // ping :D
@@ -162,7 +164,9 @@
                                             playerinterbarpos(singer.playlistbyid[singer.singi].lengt);
                                         }
                                     }
-                                } else {
+                                } else if (xhReq.status == 500){
+                                    playererror500();
+                                } else{
                                     playererrorcon();
                                 }
                             }
@@ -316,6 +320,9 @@
                                 if (player.error.showcon === 1){
                                     playererrorcon();
                                 }
+                                if (player.error.show500=== 1){
+                                    playererrorcon();
+                                }
                             }
                         }else{
                             if (player.heg>player.wid){
@@ -323,6 +330,9 @@
                                 player.flip="v";
                                 document.getElementsByTagName("body")[0].innerHTML = player.html.vert;
                                 if (player.error.showcon === 1){
+                                    playererrorcon();
+                                }
+                                if (player.error.show500 === 1){
                                     playererrorcon();
                                 }
                             }
@@ -352,6 +362,26 @@
                         } else {
                             player.error.showcon = 0;
                             document.getElementsByClassName("playererrorhor")[0].style.display = "none";
+                        }
+                    }
+                }
+                function playererror500() {
+                    if (player.flip==="v"){
+	                     document.getElementsByClassName("playererror500vert")[0].style.display = "block";
+                        player.error.show500 = 1;
+                    } else {
+                        player.error.show500 = 1;
+                        document.getElementsByClassName("playererror500hor")[0].style.display = "block";
+                    }
+                }
+                function playererror500hid() {
+                    if (player.error.show500 === 1){
+                        if (player.flip==="v"){
+	                         document.getElementsByClassName("playererror500vert")[0].style.display = "none";
+                            player.error.show500 = 0;
+                        } else {
+                            player.error.show500 = 0;
+                            document.getElementsByClassName("playererror500hor")[0].style.display = "none";
                         }
                     }
                 }
@@ -683,6 +713,34 @@
                  display:none;
             }
             .playererrorhor{
+                 position:absolute;
+                 top:0;
+                 left:0;
+                 width:420px;
+            	  height:225px;
+            	  padding-top:145px;
+                 background:#000;
+                 color:#2989d8;
+                 text-align:center;
+                 font-size:30px;
+                 z-index:99999;
+                 display:none;
+            }
+            .playererror500vert{
+                 position:absolute;
+                 top:0;
+                 left:0;
+                 width:320px;
+            	  height:390px;
+            	  padding-top:195px;
+                 background:#000;
+                 color:#2989d8;
+                 text-align:center;
+                 font-size:30px;
+                 z-index:99999;
+                 display:none;
+            }
+            .playererror500hor{
                  position:absolute;
                  top:0;
                  left:0;
