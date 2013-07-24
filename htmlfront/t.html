@@ -66,6 +66,9 @@
                     timerors:0,
                     trains : 320,
                     netrefreshtime:4000,
+                    error:{
+                       showcon:0,                    
+                    },
                     intervals : {
                         netref : "",
                         timeref : "",
@@ -84,8 +87,8 @@
                        datpi : 0,
                     },
                     html : {
-                        vert:"<div class='desktopbigclassv' id='desktopbigclass'><div class='playerboxv' id='playerbox'><div class='playerlistv' id='playerlist'></div><div class='playerstatustimev' id='playerstatustime'><div class='playerstatustimecv' id='playerstatustimec'>00:00:00</div><div class='playerstatustimefv' id='playerstatustimef'>00:00:00</div></div><div class='playerstatusbarv' id='playerstatusbar'><div class='playerstatusbarrailv' id='playerstatusbarrail'></div><div class='playerstatusbartrain' id='playerstatusbartrain'></div></div><div class='playerlinev'><div class='playerbutton' id='playerbuttonfb' onclick='playerfb()'><div class='playerfbaarrow'></div><div class='playerfbbarrow'></div></div><div class='playerbutton' id='playerbuttonp' onclick='playerplay()'><div class='playerplayarrow'></div></div><div class='playerbutton' id='playerbuttons' onclick='playerstop()'><div class='playerstoparrow'></div></div><div class='playerbutton' id='playerbuttonff' onclick='playerff()'><div class='playerffaarrow'></div><div class='playerffbarrow'></div></div><div  class='playerbutton'>S</div></div></div></div>",
-                        hor:"<div class='desktopbigclassh' id='desktopbigclass'><div class='playerboxh' id='playerbox'><div  class='playerlisth' id='playerlist'></div><div  class='playerstatustimeh' id='playerstatustime'><div  class='playerstatustimech' id='playerstatustimec'>00:00:00</div><div class='playerstatustimefh' id='playerstatustimef'>00:00:00</div></div><div class='playerstatusbarh' id='playerstatusbar'><div  class='playerstatusbarrailh' id='playerstatusbarrail'></div><div class='playerstatusbartrain' id='playerstatusbartrain'></div></div><div class='playerlineh'><div class='playerbutton' id='playerbuttonfb' onclick='playerfb()'><div class='playerfbaarrow'></div><div class='playerfbbarrow'></div></div><div  class='playerbutton' id='playerbuttonp' onclick='playerplay()'><div class='playerplayarrow'></div></div><div class='playerbutton' id='playerbuttons' onclick='playerstop()'><div class='playerstoparrow'></div></div><div class='playerbutton' id='playerbuttonff' onclick='playerff()'><div class='playerffaarrow'></div><div class='playerffbarrow'></div></div><div  class='playerbutton'>S</div></div></div></div>",              
+                        vert:"<div class='desktopbigclassv' id='desktopbigclass'><div class='playerboxv' id='playerbox'><div class='playerlistv' id='playerlist'></div><div class='playerstatustimev' id='playerstatustime'><div class='playerstatustimecv' id='playerstatustimec'>00:00:00</div><div class='playerstatustimefv' id='playerstatustimef'>00:00:00</div></div><div class='playerstatusbarv' id='playerstatusbar'><div class='playerstatusbarrailv' id='playerstatusbarrail'></div><div class='playerstatusbartrain' id='playerstatusbartrain'></div></div><div class='playerlinev'><div class='playerbutton' id='playerbuttonfb' onclick='playerfb()'><div class='playerfbaarrow'></div><div class='playerfbbarrow'></div></div><div class='playerbutton' id='playerbuttonp' onclick='playerplay()'><div class='playerplayarrow'></div></div><div class='playerbutton' id='playerbuttons' onclick='playerstop()'><div class='playerstoparrow'></div></div><div class='playerbutton' id='playerbuttonff' onclick='playerff()'><div class='playerffaarrow'></div><div class='playerffbarrow'></div></div><div  class='playerbutton'>S</div></div></div></div><div class='playererrorvert'>Connection<br>Error</div>",
+                        hor:"<div class='desktopbigclassh' id='desktopbigclass'><div class='playerboxh' id='playerbox'><div  class='playerlisth' id='playerlist'></div><div  class='playerstatustimeh' id='playerstatustime'><div  class='playerstatustimech' id='playerstatustimec'>00:00:00</div><div class='playerstatustimefh' id='playerstatustimef'>00:00:00</div></div><div class='playerstatusbarh' id='playerstatusbar'><div  class='playerstatusbarrailh' id='playerstatusbarrail'></div><div class='playerstatusbartrain' id='playerstatusbartrain'></div></div><div class='playerlineh'><div class='playerbutton' id='playerbuttonfb' onclick='playerfb()'><div class='playerfbaarrow'></div><div class='playerfbbarrow'></div></div><div  class='playerbutton' id='playerbuttonp' onclick='playerplay()'><div class='playerplayarrow'></div></div><div class='playerbutton' id='playerbuttons' onclick='playerstop()'><div class='playerstoparrow'></div></div><div class='playerbutton' id='playerbuttonff' onclick='playerff()'><div class='playerffaarrow'></div><div class='playerffbarrow'></div></div><div  class='playerbutton'>S</div></div></div></div><div class='playererrorhor'>Connection Error</div>",              
                     }
                 }
                 function playerplay() {
@@ -136,28 +139,36 @@
                         xhReq.open("POST", "/", true);
                         xhReq.setRequestHeader('Content-Type', 'application/json');
                         xhReq.overrideMimeType('application/json');
+                        xhReq.timeout = 4000;
+                        xhReq.ontimeout = function () {playererrorcon();}
                         xhReq.onreadystatechange  = function(){
                             if (xhReq.readyState == 4){
+                                if (xhReq.status == 200){
+                                    playererrorconhid();
 // package end timestamp
-                                player.netp.daten =  new Date().getTime();
+                                    player.netp.daten =  new Date().getTime();
 // ping :D
-                                player.netp.datpi = player.netp.daten - player.netp.datst;
-                                var jsonObj = JSON.parse(xhReq.responseText);
-                                singer.playlistnew = 0 ;                             
-                                for (i=0;jsonObj.length>i;i++) {
-                                     playerinput(jsonObj[i]);
-                                }
-                                jsonObj.name;
-                                if (singer.playlistnew >0){
-                                    playerlistmake();
-                                    if (singer.playlistbyid[singer.singi]!==undefined){
-                                        playerinterfacefl(singer.playlistbyid[singer.singi].lengt);
-                                        playerinterbarpos(singer.playlistbyid[singer.singi].lengt);
+                                    player.netp.datpi = player.netp.daten - player.netp.datst;
+                                    var jsonObj = JSON.parse(xhReq.responseText);
+                                    singer.playlistnew = 0 ;                             
+                                    for (i=0;jsonObj.length>i;i++) {
+                                        playerinput(jsonObj[i]);
                                     }
+                                    jsonObj.name;
+                                    if (singer.playlistnew >0){
+                                        playerlistmake();
+                                        if (singer.playlistbyid[singer.singi]!==undefined){
+                                            playerinterfacefl(singer.playlistbyid[singer.singi].lengt);
+                                            playerinterbarpos(singer.playlistbyid[singer.singi].lengt);
+                                        }
+                                    }
+                                } else {
+                                    playererrorcon();
                                 }
                             }
                         }
 // package send timestamp
+                        
                         player.netp.datst =  new Date().getTime();
                         xhReq.send(outda);
                 }
@@ -302,12 +313,18 @@
                                 player.train =420;
                                 player.flip="h";
                                 document.getElementsByTagName("body")[0].innerHTML = player.html.hor;
+                                if (player.error.showcon === 1){
+                                    playererrorcon();
+                                }
                             }
                         }else{
                             if (player.heg>player.wid){
                                 player.train =320;
                                 player.flip="v";
                                 document.getElementsByTagName("body")[0].innerHTML = player.html.vert;
+                                if (player.error.showcon === 1){
+                                    playererrorcon();
+                                }
                             }
                         }
                         player.wido = player.wid;
@@ -318,6 +335,26 @@
 
                 player.intervals.flip = setInterval(function (){playerflipinterval()}, 1000);
                 
+                function playererrorcon() {
+                    if (player.flip==="v"){
+	                     document.getElementsByClassName("playererrorvert")[0].style.display = "block";
+                        player.error.showcon = 1;
+                    } else {
+                        player.error.showcon = 1;
+                        document.getElementsByClassName("playererrorhor")[0].style.display = "block";
+                    }
+                }
+                function playererrorconhid() {
+                    if (player.error.showcon === 1){
+                        if (player.flip==="v"){
+	                         document.getElementsByClassName("playererrorvert")[0].style.display = "none";
+                            player.error.showcon = 0;
+                        } else {
+                            player.error.showcon = 0;
+                            document.getElementsByClassName("playererrorhor")[0].style.display = "none";
+                        }
+                    }
+                }
         </script>
         <style type='text/css'>
             body{
@@ -630,6 +667,34 @@
                  border-top: 10px solid transparent;
                  border-bottom: 10px solid transparent; 
                  border-right:20px solid #000; 
+            }
+            .playererrorvert{
+                 position:absolute;
+                 top:0;
+                 left:0;
+                 width:320px;
+            	  height:390px;
+            	  padding-top:195px;
+                 background:#000;
+                 color:#2989d8;
+                 text-align:center;
+                 font-size:30px;
+                 z-index:99999;
+                 display:none;
+            }
+            .playererrorhor{
+                 position:absolute;
+                 top:0;
+                 left:0;
+                 width:420px;
+            	  height:225px;
+            	  padding-top:145px;
+                 background:#000;
+                 color:#2989d8;
+                 text-align:center;
+                 font-size:30px;
+                 z-index:99999;
+                 display:none;
             }
         </style>
     </head>
