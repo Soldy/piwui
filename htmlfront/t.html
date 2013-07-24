@@ -133,8 +133,8 @@
                         } else {
                             var outda = "command="+command+"&fil="+fnam;
                         }
-                        xhReq.open("POST", "/", false);
-                        xhReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        xhReq.open("POST", "/", true);
+                        xhReq.setRequestHeader('Content-Type', 'application/json');
                         xhReq.onreadystatechange  = function(){
                             if (xhReq.readyState == 4){
 // package end timestamp
@@ -152,9 +152,6 @@
                                     if (singer.playlistbyid[singer.singi]!==undefined){
                                         playerinterfacefl(singer.playlistbyid[singer.singi].lengt);
                                         playerinterbarpos(singer.playlistbyid[singer.singi].lengt);
-                                    }
-                                    if (singer.singed.toString() === "none"){
-                                        singerpush(singer.singi)
                                     }
                                 }
                             }
@@ -665,6 +662,8 @@
                         }
                         player.wido = player.wid;
                         player.hego = player.heg;
+                        playerflipinterval();
+                        netsend("refreshing", "none");
         </script>
     </body>
 </html>
