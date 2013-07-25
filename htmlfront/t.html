@@ -132,15 +132,13 @@
                 
                 function netsend(command, fnam) {
                         var xhReq = new XMLHttpRequest();
-                        if (fnam === "none") {                   
-                            var outda = "command="+command;
-                        } else {
-                            var outda = "command="+command+"&fil="+fnam;
+                        var outda = "command="+command;
+                        if(fnam !== "none"){
+                            outda += '&fil='+fnam;
                         }
-                        xhReq.open("POST", "/", true);
+                        xhReq.open("POST", "/?"+outda, false);
                         xhReq.setRequestHeader('Content-Type', 'application/json');
                         xhReq.overrideMimeType('application/json');
-                        xhReq.timeout = 4000;
                         xhReq.ontimeout = function () {playererrorcon();}
                         xhReq.onreadystatechange  = function(){
                             if (xhReq.readyState == 4){
@@ -174,7 +172,7 @@
 // package send timestamp
                         
                         player.netp.datst =  new Date().getTime();
-                        xhReq.send(outda);
+                        xhReq.send(outda.toString());
                 }
                 
                 function playerinput(jsonom) {

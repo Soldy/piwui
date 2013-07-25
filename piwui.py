@@ -50,7 +50,7 @@ class Getco:
         inpury = web.input(command = 'web')
 # command check
         if inpury.command=="play":
-            inpuy = web.input(fil = 'web')
+            inpuy = web.input()
             omx_play(str(inpuy.fil))
         elif inpury.command=="stop":
             omx_stop()
