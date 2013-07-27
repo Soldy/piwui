@@ -47,11 +47,10 @@ class Getco:
     def POST(self):
         timstart = int(time.time())
         global omx
-        inpury = web.input(command = 'web')
+        inpury = web.input()
 # command check
         if inpury.command=="play":
-            inpuy = web.input()
-            omx_play(str(inpuy.fil))
+            omx_play(str(inpury.fil))
         elif inpury.command=="stop":
             omx_stop()
         elif inpury.command=="pause":
