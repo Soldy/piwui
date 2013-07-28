@@ -29,6 +29,7 @@ playerstat['pause'] = 0
 playerstat['outtags'] = 0
 playerstat['outtage'] = 0
 playerstat['played'] = "none"
+playerstat['seeking'] = 0
 playerstat['curentplayed'] = ""
 play_list = {}
 play_list['id'] = []
@@ -161,9 +162,13 @@ def omx_pause():
 def omx_seek(sec):
     global playerstat
     global omx
-    argnums = " -l "+str(sec)
-    omx.stop()
-    omx = pyomxplayer.OMXPlayer(playerstat['curentplayed'], argnums)
+    if playerstat['seeking'] == 0:
+        playerstat['seeking'] = 1
+        argnums = " -l "+str(sec)
+        omx.stop()
+        omx = pyomxplayer.OMXPlayer(playerstat['curentplayed'], argnums)
+        time.sleep(1.5)
+        playerstat['seeking'] = 0
     return 1    
     
 def omx_status():
