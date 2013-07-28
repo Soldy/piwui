@@ -107,10 +107,10 @@
                 }
 
                 function playerff() {
-                    netsend("seek+30", "none");
+                    netsend("seekp30", "none");
                 }
                 function playerfb() {
-                    netsend("seek-30", "none");
+                    netsend("seekm30", "none");
                 }                
                 function playerlistmake() {
 	                  var outhtml="";
@@ -136,9 +136,10 @@
                         if(fnam !== "none"){
                             outda += '&fil='+fnam;
                         }
-                        xhReq.open("POST", "/?"+outda, false);
+                        xhReq.open("POST", "/?"+outda, true);
                         xhReq.setRequestHeader('Content-Type', 'application/json');
                         xhReq.overrideMimeType('application/json');
+                        xhReq.timeout = 2000;
                         xhReq.ontimeout = function () {playererrorcon();}
                         xhReq.onreadystatechange  = function(){
                             if (xhReq.readyState == 4){

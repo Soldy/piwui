@@ -29,6 +29,7 @@ playerstat['pause'] = 0
 playerstat['outtags'] = 0
 playerstat['outtage'] = 0
 playerstat['played'] = "none"
+playerstat['curentplayed'] = ""
 play_list = {}
 play_list['id'] = []
 play_list['title'] = []
@@ -58,10 +59,13 @@ class Getco:
         elif inpury.command=="seekto":
             inpuy = web.input(fil = 'web')
             omx_seek(str(inpuy.fil))
-        elif inpury.command=="seek+30":
-            omx.seek_forward_30()
-        elif inpury.command=="seek-30":
-            omx.seek_backward_30()
+        elif inpury.command=="seekp30":
+            omx_seek(str(int(omx.position/1000000)+int(30)))
+        elif inpury.command=="seekm30":
+            if int(omx.position/1000000) > 0:
+                omx_seek(str(int(omx.position/1000000)-int(30)))
+            else:
+                omx_seek(str(1))
         else:
 # output mixi pixi
             outarray = "{"+omx_status()+"},"+','.join(outputlist) 
@@ -90,7 +94,8 @@ def omx_play(file):
         time.sleep(1)
         playerstat['playing']=1
         playerstat['played'] =str(file)
-        omx = pyomxplayer.OMXPlayer(os.path.join(MEDIA_RDIR,re.escape(play_list['path'][play_list['id'].index(str(file))])))
+        playerstat['curentplayed'] = os.path.join(MEDIA_RDIR,re.escape(play_list['path'][play_list['id'].index(str(file))]))
+        omx = pyomxplayer.OMXPlayer(playerstat['curentplayed'])
     return 1
 
 def omx_playlist():
@@ -155,9 +160,12 @@ def omx_pause():
 
 def omx_seek(sec):
     global playerstat
-    global omx 
-    omx.seek(sec)
-       
+    global omx
+    argnums = " -l "+str(sec)
+    omx.stop()
+    omx = pyomxplayer.OMXPlayer(playerstat['curentplayed'], argnums)
+    return 1    
+    
 def omx_status():
     global playerstat
     global omx
