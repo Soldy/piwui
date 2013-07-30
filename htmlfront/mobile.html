@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <title>
+        </title>
+        <script type='text/javascript'>
+// mobil extra 
+
+
+            if(navigator.userAgent.match(/Android/i)){
+                window.scrollTo(0,1);
+            }            
+            if(navigator.userAgent.match(/iPhone/i)){
+                window.scrollTo(0,1);
+            }
+            
+//this.touchstart = function (ev) { tool.mousedown(ev); }, this.touchmove = function (ev) { tool.mousemove(ev); } 
+//this.touchend = function (ev) { tool.mouseup(ev); }
+
+                var singer = {
+                    singed : "none",
+                    singi : "none",
+                    playlist : new Array(),
+                    playlistbyid : {},
+                    playlistnew : 0,
+                    playing : 0,
+                }
+                singer.playlist[0] = "fdsdf";
+                function singerpush(pushed) {
+                    var cuid = document.getElementById("playerelement"+pushed.toString());
+                    if (singer.singed.toString() === pushed.toString()){
+                        if (player.flip === "v"){
+                            cuid.className = "playerelementv";
+                        } else { 
+                            cuid.className = "playerelementh";
+                        }
+                        singer.singed = "none";
+                    }else {
+                        if (singer.singed.toString() !== "none"){
+                            var siid = document.getElementById("playerelement"+singer.singed.toString());
+                            if (player.flip === "v"){
+                                siid.className = "playerelementv";
+                            } else {
+	                             siid.className = "playerelementh";
+                            }
+                        }
+                        if (player.flip === "v"){
+   	                      cuid.className = "playerelementv playerelementsing";
+   	                  } else {
+   	                      cuid.className = "playerelementh playerelementsing";  	                    
+  	                     }
+                        singer.singed = pushed.toString();
+                    }
+                    singer.singi = singer.singed ;
+                
+                }
+                
+                
+                var player = {
+                    playing : 0,
+                    interval : "",
+                    timepos:0,
+                    timerors:0,
+                    trains : 320,
+                    netrefreshtime:4000,
+                    error:{
+                       showcon:0, 
+                       show500:0,                    
+                    },
+                    intervals : {
+                        netref : "",
+                        timeref : "",
+                        flip : "",
+                    },
+                    wid:0,
+                    heg:0,
+                    wido:0,
+                    hego:0,
+                    flip:"v",
+                    netp:{
+                       num: 0,
+                       av : new Array(),
+                       datst : new Date().getTime(),
+                       daten : new Date().getTime(),
+                       datpi : 0,
+                    },
+                    html : {
+                        vert:"<div class='desktopbigclassv' id='desktopbigclass'><div class='playerboxv' id='playerbox'><div class='playerlistv' id='playerlist'></div><div class='playerstatustimev' id='playerstatustime'><div class='playerstatustimecv' id='playerstatustimec'>00:00:00</div><div class='playerstatustimefv' id='playerstatustimef'>00:00:00</div></div><div class='playerstatusbarv' id='playerstatusbar'><div class='playerstatusbarrailv' id='playerstatusbarrail'></div><div class='playerstatusbartrain' id='playerstatusbartrain'></div></div><div class='playerlinev'><div class='playerbutton' id='playerbuttonfb' onclick='playerfb()'><div class='playerfbaarrow'></div><div class='playerfbbarrow'></div></div><div class='playerbutton' id='playerbuttonp' onclick='playerplay()'><div class='playerplayarrow'></div></div><div class='playerbutton' id='playerbuttons' onclick='playerstop()'><div class='playerstoparrow'></div></div><div class='playerbutton' id='playerbuttonff' onclick='playerff()'><div class='playerffaarrow'></div><div class='playerffbarrow'></div></div><div  class='playerbutton'>S</div></div></div></div><div class='playererrorvert'>Connection<br>Error</div><div class='playererror500vert'>Server<br>Error</div>",
+                        hor:"<div class='desktopbigclassh' id='desktopbigclass'><div class='playerboxh' id='playerbox'><div  class='playerlisth' id='playerlist'></div><div  class='playerstatustimeh' id='playerstatustime'><div  class='playerstatustimech' id='playerstatustimec'>00:00:00</div><div class='playerstatustimefh' id='playerstatustimef'>00:00:00</div></div><div class='playerstatusbarh' id='playerstatusbar'><div  class='playerstatusbarrailh' id='playerstatusbarrail'></div><div class='playerstatusbartrain' id='playerstatusbartrain'></div></div><div class='playerlineh'><div class='playerbutton' id='playerbuttonfb' onclick='playerfb()'><div class='playerfbaarrow'></div><div class='playerfbbarrow'></div></div><div  class='playerbutton' id='playerbuttonp' onclick='playerplay()'><div class='playerplayarrow'></div></div><div class='playerbutton' id='playerbuttons' onclick='playerstop()'><div class='playerstoparrow'></div></div><div class='playerbutton' id='playerbuttonff' onclick='playerff()'><div class='playerffaarrow'></div><div class='playerffbarrow'></div></div><div  class='playerbutton'>S</div></div></div></div><div class='playererrorhor'>Connection Error</div><div class='playererror500hor'>Server Error</div>",              
+                    }
+                }
+                function playerplay() {
+                    if (singer.singed.toString() !=="none") {
+                        if (player.playing === 0){
+                            netsend("play", singer.singed);
+                        } else {
+                            netsend("pause", "none");
+                        }    
+                    }
+                }
+
+                function playerstop() {
+                    netsend("stop", "none");
+                }
+
+                function playerff() {
+                    netsend("seekp30", "none");
+                }
+                function playerfb() {
+                    netsend("seekm30", "none");
+                }                
+                function playerlistmake() {
+	                  var outhtml="";
+	                  for (i=0; singer.playlist.length > i ; i++ ) {
+	                       if (player.flip === "v"){
+   	                       outhtml+="<div  class='playerelementv ";
+   	                    } else {
+   	                       outhtml+="<div  class='playerelementh ";   	                    
+   	                    }
+ 	                       if (singer.singed === singer.playlist[i].id){
+	                           outhtml+="playerelementsing";
+	                       }
+	                       outhtml+="' id='playerelement"+singer.playlist[i].id+"' onclick='singerpush("+singer.playlist[i].id+")'>"+singer.playlist[i].nam+"</div>";
+	                       
+	                  }
+	                  document.getElementById("playerlist").innerHTML=outhtml; 
+
+                }
+                
+                function netsend(command, fnam) {
+                        var xhReq = new XMLHttpRequest();
+                        var outda = "command="+command;
+                        if(fnam !== "none"){
+                            outda += '&fil='+fnam;
+                        }
+                        xhReq.open("POST", "/?"+outda, true);
+                        xhReq.setRequestHeader('Content-Type', 'application/json');
+                        xhReq.overrideMimeType('application/json');
+                        xhReq.timeout = 2000;
+                        xhReq.ontimeout = function () {playererrorcon();}
+                        xhReq.onreadystatechange  = function(){
+                            if (xhReq.readyState == 4){
+                                if (xhReq.status == 200){
+                                    playererrorconhid();
+                                    playererror500hid();
+// package end timestamp
+                                    player.netp.daten =  new Date().getTime();
+// ping :D
+                                    player.netp.datpi = player.netp.daten - player.netp.datst;
+                                    var jsonObj = JSON.parse(xhReq.responseText);
+                                    singer.playlistnew = 0 ;                             
+                                    for (i=0;jsonObj.length>i;i++) {
+                                        playerinput(jsonObj[i]);
+                                    }
+                                    jsonObj.name;
+                                    if (singer.playlistnew >0){
+                                        playerlistmake();
+                                        if (singer.playlistbyid[singer.singi]!==undefined){
+                                            playerinterfacefl(singer.playlistbyid[singer.singi].lengt);
+                                            playerinterbarpos(singer.playlistbyid[singer.singi].lengt);
+                                        }
+                                    }
+                                } else if (xhReq.status == 500){
+                                    playererror500();
+                                } else{
+                                    playererrorcon();
+                                }
+                            }
+                        }
+// package send timestamp
+                        
+                        player.netp.datst =  new Date().getTime();
+                        xhReq.send(outda.toString());
+                }
+                
+                function playerinput(jsonom) {
+	                 if (jsonom.modul==="interface"){
+                        playerinterface(jsonom);
+	                 }else if (jsonom.modul==="playlist"){
+	                     if(singer.playlistnew === 0){
+                            singer.playlist.length=0;
+                            singer.playlistnew = 1;            	                     
+	                     }
+	                     singer.playlist.push({id:jsonom.id,path:jsonom.path,nam:jsonom.nam,lengt:jsonom.lengt});
+	                     singer.playlistbyid[jsonom.id]={id:jsonom.id,path:jsonom.path,nam:jsonom.nam,lengt:jsonom.lengt};
+	                 }
+	                 
+                }                
+                
+                function playerinterface(jsonom){
+	                 if (jsonom.interfac==="playing"){
+	                     document.getElementById("playerbuttonp").innerHTML="<div class='playerpausearrow'></div>";
+	                     player.playing = 1;
+	                 }else if (jsonom.interfac==="pause"){
+	                     document.getElementById("playerbuttonp").innerHTML="<div class='playerplayarrow'></div>";
+	                     player.playing = 2;
+	                 } else {
+	                     document.getElementById("playerbuttonp").innerHTML="<div class='playerplayarrow'></div>";
+	                     player.playing = 0;
+                    }
+                    if (singer.singed==="none" ) {
+	                     singer.singi = jsonom.singed;
+	                 }
+	                 player.timerors = parseInt(jsonom.position/1000000);
+// perfect time syncron "it's easy" pts1
+                    var timejump = (parseInt((jsonom.position-(player.timerors*1000000))/1000)+parseInt(player.netp.datpi/2));
+                    timejump = timejump - (parseInt(timejump/1000)*1000);
+                    clearInterval(player.intervals.timeref);
+	                 player.intervals.timeref = setInterval(function (){playertimejump()}, (1000-timejump));
+                }
+
+                function playertimejump() {
+                    playerinterfacetimerint();
+                    clearInterval(player.intervals.timeref);
+	                 player.intervals.timeref = setInterval(function (){playerinterfacetimerint()}, 1000);  
+                }
+
+
+                function playerinterfacetimerint() {
+                    if (player.playing ===1) {
+                        player.timerors += 1;
+                    } else if(player.playing ===0){
+	                     player.timerors = 0;
+                    }
+	                 player.timepos = player.timerors;
+	                 fsec = player.timerors;
+	                 var hur = parseInt(fsec/3600);
+	                 var mun = parseInt((fsec-(hur*3600))/60);
+	                 var suc = (fsec-(hur*3600)-(mun*60));
+                    var outhtml = "";
+                    if (hur === 0) {
+                        outhtml = "00:";
+                    } else if (10 > hur ){
+                        outhtml = "0"+hur.toString()+":";
+                    } else {
+                        outhtml = hur.toString()+":";
+                    }	                 
+                    if (mun === 0) {
+                        outhtml += "00:";
+                    } else if (10 > mun){
+                        outhtml += "0"+mun.toString()+":";
+                    } else {
+                        outhtml += mun.toString()+":";
+                    }
+                    if (suc === 0) {
+                        outhtml += "00";
+                    } else if (10 > suc){
+                        outhtml += "0"+suc.toString();
+                    } else {
+                        outhtml += suc.toString();
+                    }
+	                 document.getElementById("playerstatustimec").innerHTML= outhtml;
+                }
+                player.intervals.timeref = setInterval(function (){playerinterfacetimerint()}, 1000);
+
+                function playerinterfacefl(pleng){playerinterbarpos(pleng)
+	                 var fsec = parseInt(pleng);
+	                 var hur = parseInt(fsec/3600);
+	                 var mun = parseInt((fsec-(hur*3600))/60);
+	                 var suc = (fsec-(hur*3600)-(mun*60));
+                    var outhtml = "";
+                    if (hur === 0) {
+                        outhtml = "00:";
+                    } else if (10 > hur ){
+                        outhtml = "0"+hur.toString()+":";
+                    } else {
+                        outhtml = hur.toString()+":";
+                    }	                 
+                    if (mun === 0) {
+                        outhtml += "00:";
+                    } else if (10 > mun){
+                        outhtml += "0"+mun.toString()+":";
+                    } else {
+                        outhtml += mun.toString()+":";
+                    }
+                    if (suc === 0) {
+                        outhtml += "00";
+                    } else if (10 > suc){
+                        outhtml += "0"+suc.toString();
+                    } else {
+                        outhtml += suc.toString();
+                    }
+	                 document.getElementById("playerstatustimef").innerHTML= outhtml;   
+                }
+       
+
+        
+                function playerinterbarpos(pleng){
+                    var newpos = parseInt((player.timepos/pleng)*(player.trains-12));
+                    document.getElementById("playerstatusbartrain").style.left = newpos.toString()+"px";
+                }
+                player.intervals.netref = setInterval(function (){netsend("refreshing", "none")}, player.netrefreshtime);
+
+                function playerflipinterval(){
+                    if (document.body && document.body.offsetWidth) {
+                        player.wid = document.body.offsetWidth;
+                        player.heg = document.body.offsetHeight;
+                    }
+                    if (document.compatMode=='CSS1Compat' &&
+                    document.documentElement &&
+                    document.documentElement.offsetWidth ) {
+                        player.wid = document.documentElement.offsetWidth;
+                        player.heg = document.documentElement.offsetHeight;
+                    }
+                    if (window.innerWidth && window.innerHeight) {
+                        player.wid = window.innerWidth;
+                        player.heg = window.innerHeight;
+                    }
+                
+                    if (player.wid != player.wido  || player.heg != player.hego){
+                        if (player.flip==="v"){
+                            if (player.wid>player.heg){
+                                player.train =420;
+                                player.flip="h";
+                                document.getElementsByTagName("body")[0].innerHTML = player.html.hor;
+                                if (player.error.showcon === 1){
+                                    playererrorcon();
+                                }
+                                if (player.error.show500=== 1){
+                                    playererror500();
+                                }
+                            }
+                        }else{
+                            if (player.heg>player.wid){
+                                player.train =320;
+                                player.flip="v";
+                                document.getElementsByTagName("body")[0].innerHTML = player.html.vert;
+                                if (player.error.showcon === 1){
+                                    playererrorcon();
+                                }
+                                if (player.error.show500 === 1){
+                                    playererror500();
+                                }
+                            }
+                        }
+                        player.wido = player.wid;
+                        player.hego = player.heg;
+                    }
+               
+                } 
+
+
+                
+                function playererrorcon() {
+                    if (player.flip==="v"){
+	                     document.getElementsByClassName("playererrorvert")[0].style.display = "block";
+                        player.error.showcon = 1;
+                    } else {
+                        player.error.showcon = 1;
+                        document.getElementsByClassName("playererrorhor")[0].style.display = "block";
+                    }
+                }
+                function playererrorconhid() {
+                    if (player.error.showcon === 1){
+                        if (player.flip==="v"){
+	                         document.getElementsByClassName("playererrorvert")[0].style.display = "none";
+                            player.error.showcon = 0;
+                        } else {
+                            player.error.showcon = 0;
+                            document.getElementsByClassName("playererrorhor")[0].style.display = "none";
+                        }
+                    }
+                }
+                function playererror500() {
+                    if (player.flip==="v"){
+	                     document.getElementsByClassName("playererror500vert")[0].style.display = "block";
+                        player.error.show500 = 1;
+                    } else {
+                        player.error.show500 = 1;
+                        document.getElementsByClassName("playererror500hor")[0].style.display = "block";
+                    }
+                }
+                function playererror500hid() {
+                    if (player.error.show500 === 1){
+                        if (player.flip==="v"){
+	                         document.getElementsByClassName("playererror500vert")[0].style.display = "none";
+                            player.error.show500 = 0;
+                        } else {
+                            player.error.show500 = 0;
+                            document.getElementsByClassName("playererror500hor")[0].style.display = "none";
+                        }
+                    }
+                }
+        </script>
+        <style type='text/css'>
+            body{
+                 height:100%;
+                 width:100%;
+                 margin:0;			
+                 overflow:hidden;
+                 background:#000;
+            }
+			   div{
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                -icab-user-select: none;
+                -o-user-select: none;
+                user-select: none;			   
+			   }
+            .desktopbigclassv{
+                 float:left;
+                 width:320px;
+            	  height:420px;
+            	  background: #262626;
+            	  box-shadow: 0px 0px 60px 80px #050505 inset;
+            }
+            .desktopbigclassh{
+                 float:left;
+                 width:420px;
+            	  height:320px;
+            	  background: #262626;
+            	  box-shadow: 0px 0px 60px 80px #050505 inset;
+            }
+            .playerlinev{
+                 height:48px;
+                 width:320px;           
+                 border-top: 2px solid #2989d8;
+            }
+            .playerlineh{
+                 height:48px;
+                 width:370px;
+                 padding-left:50px;
+                 border-top: 2px solid #2989d8;
+            }
+            .playerlist{
+                 height:330px;
+                 width:320px;           
+                 overflow-y:auto;
+                 overflow-x:hidden;
+            }
+            .playerlistv{
+                 height:330px;
+                 width:320px;           
+                 overflow-y:auto;
+                 overflow-x:hidden;
+            }
+            .playerlisth{
+                 height:230px;
+                 width:420px;           
+                 overflow-y:auto;
+                 overflow-x:hidden;
+            }
+            .playerelement{
+                 height:18px;
+                 width:320px;           
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 overflow:hidden;
+                 cursor:pointer;
+            }
+            .playerelementv{
+                 height:18px;
+                 width:320px;           
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 overflow:hidden;
+                 cursor:pointer;
+            }
+            .playerelementh{
+                 height:18px;
+                 width:420px;           
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 overflow:hidden;
+                 cursor:pointer;
+            }
+            .playerelementsing{           
+                 color:#000;
+                 background: #2989d8;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+            }
+            .playerstatustimev{ 
+                 height:20px;
+                 width:320px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+            }
+            .playerstatustimeh{ 
+                 height:20px;
+                 width:420px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+            }
+            .playerstatustimec{
+                 float:left; 
+                 height:20px;
+                 width:160px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 cursor:default;
+            }
+            .playerstatustimecv{
+                 float:left; 
+                 height:20px;
+                 width:160px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 cursor:default;
+            }
+            .playerstatustimech{
+                 float:left; 
+                 height:20px;
+                 width:210px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 cursor:default;
+            }
+            .playerstatustimef{ 
+                 float:left;
+                 height:20px;
+                 width:160px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 text-align:right;
+                 cursor:default;
+            }
+            .playerstatustimefv{ 
+                 float:left;
+                 height:20px;
+                 width:160px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 text-align:right;
+                 cursor:default;
+            }
+            .playerstatustimefh{ 
+                 float:left;
+                 height:20px;
+                 width:210px;
+                 color:#2989d8;
+                 font-weight:bold;
+                 font-size:16px;
+                 text-align:right;
+                 cursor:default;
+            }
+            .playerstatusbarv{
+                 position:static;
+                 height:20px;
+                 width:320px;
+            }
+            .playerstatusbarh{
+                 position:static;
+                 height:20px;
+                 width:420px;
+            }
+            .playerstatusbarrailv{ 
+                 position:relative;
+                 top:9px;
+                 height:2px;
+                 width:320px;
+                 background:#2989d8;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+            }
+            .playerstatusbarrailh{ 
+                 position:relative;
+                 top:9px;
+                 height:2px;
+                 width:420px;
+                 background:#2989d8;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+            }
+            .playerstatusbartrain{
+                 position:relative;
+                 top:2px;
+                 height:12px;
+                 width:12px;
+                 background:#2989d8;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+            }
+            .playerbutton{
+                 float:left;
+                 margin-top:10px;
+                 margin-left:11px;
+                 height:30px;
+                 width:50px;
+                 color:#000;
+                 text-align:center;
+                 font-size: 24px;
+                 font-weight:bold;
+                 cursor:pointer;
+                 background: #1e5799;
+                 background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+                 background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+                 -webkit-border-radius: 3px;
+                 -moz-border-radius: 3px;
+                 border-radius: 3px;
+            }
+            .playerplayarrow{
+                 margin-top:5px;
+                 margin-left:17px;
+                 width:0; 
+                 height:0; 
+                 border-top: 10px solid transparent;
+                 border-bottom: 10px solid transparent; 
+                 border-left:20px solid #000; 
+            }
+            .playerstoparrow{
+                 margin-top:5px;
+                 margin-left:15px;
+                 width:20px; 
+                 height:20px;
+                 background:#000; 
+            }
+            .playerpausearrow{
+                 margin-top:5px;
+                 margin-left:15px;
+                 width:10px; 
+                 height:20px;
+                 background:transparent;
+                 border-left:5px solid #000;
+                 border-right:5px solid #000;
+            }
+            .playerffaarrow{
+                 position:absolute;
+                 margin-top:5px;
+                 margin-left:10px;
+                 z-index:98;
+                 width:0; 
+                 height:0; 
+                 border-top: 10px solid transparent;
+                 border-bottom: 10px solid transparent; 
+                 border-left:20px solid #000; 
+            }
+            .playerffbarrow{
+                 position:absolute;
+                 margin-top:5px;
+                 margin-left:25px;
+                 z-index:99;
+                 width:0; 
+                 height:0; 
+                 border-top: 10px solid transparent;
+                 border-bottom: 10px solid transparent; 
+                 border-left:20px solid #000; 
+            }
+            .playerfbaarrow{
+                 position:absolute;
+                 margin-top:5px;
+                 margin-left:5px;
+                 width:0; 
+                 height:0; 
+                 border-top: 10px solid transparent;
+                 border-bottom: 10px solid transparent; 
+                 border-right:20px solid #000; 
+            }
+            .playerfbbarrow{
+                 position:absolute;
+                 margin-top:5px;
+                 margin-left:20px;
+                 width:0; 
+                 height:0; 
+                 border-top: 10px solid transparent;
+                 border-bottom: 10px solid transparent; 
+                 border-right:20px solid #000; 
+            }
+            .playererrorvert{
+                 position:absolute;
+                 top:0;
+                 left:0;
+                 width:320px;
+            	  height:390px;
+            	  padding-top:195px;
+                 background:#000;
+                 color:#2989d8;
+                 text-align:center;
+                 font-size:30px;
+                 z-index:99999;
+                 display:none;
+            }
+            .playererrorhor{
+                 position:absolute;
+                 top:0;
+                 left:0;
+                 width:420px;
+            	  height:225px;
+            	  padding-top:145px;
+                 background:#000;
+                 color:#2989d8;
+                 text-align:center;
+                 font-size:30px;
+                 z-index:99999;
+                 display:none;
+            }
+            .playererror500vert{
+                 position:absolute;
+                 top:0;
+                 left:0;
+                 width:320px;
+            	  height:390px;
+            	  padding-top:195px;
+                 background:#000;
+                 color:#2989d8;
+                 text-align:center;
+                 font-size:30px;
+                 z-index:99999;
+                 display:none;
+            }
+            .playererror500hor{
+                 position:absolute;
+                 top:0;
+                 left:0;
+                 width:420px;
+            	  height:225px;
+            	  padding-top:145px;
+                 background:#000;
+                 color:#2989d8;
+                 text-align:center;
+                 font-size:30px;
+                 z-index:99999;
+                 display:none;
+            }
+        </style>
+    </head>
+    <body onresize="playerflipinterval()">
+        <script type="text/javascript">
+
+                    if (document.body && document.body.offsetWidth) {
+                        player.wid = document.body.offsetWidth;
+                        player.heg = document.body.offsetHeight;
+                    }
+                    if (document.compatMode=='CSS1Compat' &&
+                    document.documentElement &&
+                    document.documentElement.offsetWidth ) {
+                        player.wid = document.documentElement.offsetWidth;
+                        player.heg = document.documentElement.offsetHeight;
+                    }
+                    if (window.innerWidth && window.innerHeight) {
+                        player.wid = window.innerWidth;
+                        player.heg = window.innerHeight;
+                    }
+                
+                        if (player.wid>player.heg){
+                                player.train =420;
+                                player.flip="h";
+                                document.getElementsByTagName("body")[0].innerHTML = player.html.hor;
+                        }
+                        if (player.heg>player.wid){
+                                player.train =320;
+                                player.flip="v";
+                                document.getElementsByTagName("body")[0].innerHTML = player.html.vert;
+                        }
+                        player.wido = player.wid;
+                        player.hego = player.heg;
+                        playerflipinterval();
+                        netsend("refreshing", "none");
+        </script>
+    </body>
+</html>
