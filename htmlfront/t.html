@@ -342,7 +342,7 @@
                
                 } 
 
-                player.intervals.flip = setInterval(function (){playerflipinterval()}, 1000);
+
                 
                 function playererrorcon() {
                     if (player.flip==="v"){
@@ -755,7 +755,7 @@
             }
         </style>
     </head>
-    <body>
+    <body onresize="playerflipinterval()">
         <script type="text/javascript">
 
                     if (document.body && document.body.offsetWidth) {

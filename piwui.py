@@ -71,9 +71,11 @@ class Getco:
 # output mixi pixi
             outarray = "{"+omx_status()+"},"+','.join(outputlist) 
             outarray = "{\"modul\":\"statistic\",\"timestart\":\""+str(timstart)+"\",\"timeend\":\""+str( int(time.time()))+"\"},"+outarray
+            web.header('Content-Type', 'application/json')
             return "["+outarray+"]"
         outarray = "{"+omx_status()+"}"
         outarray = "{\"modul\":\"statistic\",\"timestart\":\""+str(timstart)+"\",\"timeend\":\""+str( int(time.time()))+"\"},"+outarray
+        web.header('Content-Type', 'application/json')
         return "["+outarray+"]"
 #Temporaly ui send 
     def GET(self):
