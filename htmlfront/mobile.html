@@ -313,7 +313,7 @@
                     if (player.wid != player.wido  || player.heg != player.hego){
                         if (player.flip==="v"){
                             if (player.wid>player.heg){
-                                player.train =420;
+                                player.train =player.heg;
                                 player.flip="h";
                                 document.getElementsByTagName("body")[0].innerHTML = player.html.hor;
                                 if (player.error.showcon === 1){
@@ -325,7 +325,7 @@
                             }
                         }else{
                             if (player.heg>player.wid){
-                                player.train =320;
+                                player.train = player.wid;
                                 player.flip="v";
                                 document.getElementsByTagName("body")[0].innerHTML = player.html.vert;
                                 if (player.error.showcon === 1){
@@ -339,8 +339,28 @@
                         player.wido = player.wid;
                         player.hego = player.heg;
                     }
-               
-                } 
+                    if (player.flip==="v"){
+                        document.getElementsByClassName("playerlinev")[0].style.paddingLeft = ((parseInt(player.wid)-320)/2).toString()+"px";
+                        document.getElementsByClassName("playererrorvert")[0].style.fontSize = ((parseInt(player.heg)/10)-1).toString()+"px";
+                        document.getElementsByClassName("playererrorvert")[0].style.height = (player.heg-((parseInt(player.heg)/10)-1)).toString()+"px";
+                        document.getElementsByClassName("playererrorvert")[0].style.paddingTop = (parseInt((player.heg-((parseInt(player.heg)/10)-1))/2)).toString()+"px";
+                        document.getElementsByClassName("playererror500vert")[0].style.fontSize = ((parseInt(player.heg)/10)-1).toString()+"px";
+                        document.getElementsByClassName("playererror500vert")[0].style.height = (player.heg-((parseInt(player.heg)/10)-1)).toString()+"px";
+                        document.getElementsByClassName("playererror500vert")[0].style.paddingTop = (parseInt((player.heg-((parseInt(player.heg)/10)-1))/2)).toString()+"px";
+                    } else {
+                        document.getElementsByClassName("playerlineh")[0].style.paddingLeft = ((parseInt(player.wid)-320)/2).toString()+"px";
+                        document.getElementsByClassName("playererrorhor")[0].style.fontSize = ((parseInt(player.heg)/10)-1).toString()+"px";
+                        document.getElementsByClassName("playererrorhor")[0].style.height = (player.heg-((parseInt(player.heg)/10)-1)).toString()+"px";
+                        document.getElementsByClassName("playererrorhor")[0].style.paddingTop = (parseInt((player.heg-((parseInt(player.heg)/10)-1))/2)).toString()+"px";
+                        document.getElementsByClassName("playererror500hor")[0].style.fontSize = ((parseInt(player.heg)/10)-1).toString()+"px";
+                        document.getElementsByClassName("playererror500hor")[0].style.height = (player.heg-((parseInt(player.heg)/10)-1)).toString()+"px";
+                        document.getElementsByClassName("playererror500hor")[0].style.paddingTop = (parseInt((player.heg-((parseInt(player.heg)/10)-1))/2)).toString()+"px";
+                    }
+                    document.getElementById("playerlist").style.height = (parseInt(player.heg)-85).toString()+"px";
+                    document.getElementById("playerstatustimec").style.width = (parseInt(player.wid)/2).toString()+"px";
+                    document.getElementById("playerstatustimef").style.width = (parseInt(player.wid)/2).toString()+"px";
+                }
+
 
 
                 
@@ -405,50 +425,50 @@
 			   }
             .desktopbigclassv{
                  float:left;
-                 width:320px;
-            	  height:420px;
+                 width:100%;
+            	  height:100%;
             	  background: #262626;
             	  box-shadow: 0px 0px 60px 80px #050505 inset;
             }
             .desktopbigclassh{
                  float:left;
-                 width:420px;
-            	  height:320px;
+                 width:100%;
+            	  height:100%;
             	  background: #262626;
             	  box-shadow: 0px 0px 60px 80px #050505 inset;
             }
             .playerlinev{
                  height:48px;
-                 width:320px;           
+                 width:100%;           
                  border-top: 2px solid #2989d8;
             }
             .playerlineh{
                  height:48px;
-                 width:370px;
+                 width:100%;
                  padding-left:50px;
                  border-top: 2px solid #2989d8;
             }
             .playerlist{
                  height:330px;
-                 width:320px;           
+                 width:100%;           
                  overflow-y:auto;
                  overflow-x:hidden;
             }
             .playerlistv{
                  height:330px;
-                 width:320px;           
+                 width:100%;          
                  overflow-y:auto;
                  overflow-x:hidden;
             }
             .playerlisth{
                  height:230px;
-                 width:420px;           
+                 width:100%;           
                  overflow-y:auto;
                  overflow-x:hidden;
             }
             .playerelement{
                  height:18px;
-                 width:320px;           
+                 width:100%;           
                  color:#2989d8;
                  font-weight:bold;
                  font-size:16px;
@@ -457,7 +477,7 @@
             }
             .playerelementv{
                  height:18px;
-                 width:320px;           
+                 width:100%;           
                  color:#2989d8;
                  font-weight:bold;
                  font-size:16px;
@@ -466,7 +486,7 @@
             }
             .playerelementh{
                  height:18px;
-                 width:420px;           
+                 width:100%;           
                  color:#2989d8;
                  font-weight:bold;
                  font-size:16px;
@@ -486,14 +506,14 @@
             }
             .playerstatustimev{ 
                  height:20px;
-                 width:320px;
+                 width:100%;
                  color:#2989d8;
                  font-weight:bold;
                  font-size:16px;
             }
             .playerstatustimeh{ 
                  height:20px;
-                 width:420px;
+                 width:100%;
                  color:#2989d8;
                  font-weight:bold;
                  font-size:16px;
@@ -558,18 +578,18 @@
             .playerstatusbarv{
                  position:static;
                  height:20px;
-                 width:320px;
+                 width:100%;
             }
             .playerstatusbarh{
                  position:static;
                  height:20px;
-                 width:420px;
+                 width:100%;
             }
             .playerstatusbarrailv{ 
                  position:relative;
                  top:9px;
                  height:2px;
-                 width:320px;
+                 width:100%;
                  background:#2989d8;
                  background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
                  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
@@ -583,7 +603,7 @@
                  position:relative;
                  top:9px;
                  height:2px;
-                 width:420px;
+                 width:100%;
                  background:#2989d8;
                  background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
                  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
@@ -701,7 +721,7 @@
                  position:absolute;
                  top:0;
                  left:0;
-                 width:320px;
+                 width:100%;
             	  height:390px;
             	  padding-top:195px;
                  background:#000;
@@ -715,7 +735,7 @@
                  position:absolute;
                  top:0;
                  left:0;
-                 width:420px;
+                 width:100%;
             	  height:225px;
             	  padding-top:145px;
                  background:#000;
@@ -729,7 +749,7 @@
                  position:absolute;
                  top:0;
                  left:0;
-                 width:320px;
+                 width:100%;
             	  height:390px;
             	  padding-top:195px;
                  background:#000;
@@ -743,7 +763,7 @@
                  position:absolute;
                  top:0;
                  left:0;
-                 width:420px;
+                 width:100%;
             	  height:225px;
             	  padding-top:145px;
                  background:#000;

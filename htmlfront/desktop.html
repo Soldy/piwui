@@ -341,13 +341,26 @@
                     }
                     if (player.flip==="v"){
                         document.getElementsByClassName("playerlinev")[0].style.paddingLeft = ((parseInt(player.wid)-320)/2).toString()+"px";
+                        document.getElementsByClassName("playererrorvert")[0].style.fontSize = ((parseInt(player.heg)/10)-1).toString()+"px";
+                        document.getElementsByClassName("playererrorvert")[0].style.height = (player.heg-((parseInt(player.heg)/10)-1)).toString()+"px";
+                        document.getElementsByClassName("playererrorvert")[0].style.paddingTop = (parseInt((player.heg-((parseInt(player.heg)/10)-1))/2)).toString()+"px";
+                        document.getElementsByClassName("playererror500vert")[0].style.fontSize = ((parseInt(player.heg)/10)-1).toString()+"px";
+                        document.getElementsByClassName("playererror500vert")[0].style.height = (player.heg-((parseInt(player.heg)/10)-1)).toString()+"px";
+                        document.getElementsByClassName("playererror500vert")[0].style.paddingTop = (parseInt((player.heg-((parseInt(player.heg)/10)-1))/2)).toString()+"px";
                     } else {
                         document.getElementsByClassName("playerlineh")[0].style.paddingLeft = ((parseInt(player.wid)-320)/2).toString()+"px";
+                        document.getElementsByClassName("playererrorhor")[0].style.fontSize = ((parseInt(player.heg)/10)-1).toString()+"px";
+                        document.getElementsByClassName("playererrorhor")[0].style.height = (player.heg-((parseInt(player.heg)/10)-1)).toString()+"px";
+                        document.getElementsByClassName("playererrorhor")[0].style.paddingTop = (parseInt((player.heg-((parseInt(player.heg)/10)-1))/2)).toString()+"px";
+                        document.getElementsByClassName("playererror500hor")[0].style.fontSize = ((parseInt(player.heg)/10)-1).toString()+"px";
+                        document.getElementsByClassName("playererror500hor")[0].style.height = (player.heg-((parseInt(player.heg)/10)-1)).toString()+"px";
+                        document.getElementsByClassName("playererror500hor")[0].style.paddingTop = (parseInt((player.heg-((parseInt(player.heg)/10)-1))/2)).toString()+"px";
                     }
-                    document.getElementById("playerlist").style.height = (parseInt(player.heg)-100).toString()+"px";
+                    document.getElementById("playerlist").style.height = (parseInt(player.heg)-85).toString()+"px";
                     document.getElementById("playerstatustimec").style.width = (parseInt(player.wid)/2).toString()+"px";
                     document.getElementById("playerstatustimef").style.width = (parseInt(player.wid)/2).toString()+"px";
-                } 
+                }
+
 
 
                 
@@ -708,7 +721,7 @@
                  position:absolute;
                  top:0;
                  left:0;
-                 width:320px;
+                 width:100%;
             	  height:390px;
             	  padding-top:195px;
                  background:#000;
@@ -722,7 +735,7 @@
                  position:absolute;
                  top:0;
                  left:0;
-                 width:420px;
+                 width:100%;
             	  height:225px;
             	  padding-top:145px;
                  background:#000;
@@ -736,7 +749,7 @@
                  position:absolute;
                  top:0;
                  left:0;
-                 width:320px;
+                 width:100%;
             	  height:390px;
             	  padding-top:195px;
                  background:#000;
@@ -750,7 +763,7 @@
                  position:absolute;
                  top:0;
                  left:0;
-                 width:420px;
+                 width:100%;
             	  height:225px;
             	  padding-top:145px;
                  background:#000;
