@@ -3,7 +3,7 @@
 import osonsqlite
 
 
-def connect (dbtype, dbaddr, dbport, dbuser, dbpass):
+def connect (dbtype, dbaddr, dbport=None, dbuser=None, dbpass=None):
     if dbtype == "sqlite":
         return osonsqlite.connect(dbaddr)
 

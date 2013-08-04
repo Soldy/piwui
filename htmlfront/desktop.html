@@ -289,7 +289,7 @@
 
         
                 function playerinterbarpos(pleng){
-                    var newpos = parseInt((player.timepos/pleng)*(player.trains-12));
+                    var newpos = parseInt((player.timepos/pleng)*(player.wid-12));
                     document.getElementById("playerstatusbartrain").style.left = newpos.toString()+"px";
                 }
                 player.intervals.netref = setInterval(function (){netsend("refreshing", "none")}, player.netrefreshtime);
