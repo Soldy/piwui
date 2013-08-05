@@ -12,6 +12,11 @@
 
 install :
 
+
+
+
 debian & ubuntu & rasbian:
+
 apt-get install python-pip
+
 pip install web.py
