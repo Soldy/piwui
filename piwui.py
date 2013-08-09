@@ -44,10 +44,28 @@ play_list['length']=[]
 outputlist=[]
 
 
+#webpy.hacked compatible session
+
+sessarl = {}
+inside = {}
+inside['sessionnum'] = 0
+
+def ssidgen():
+    global inside
+    global sessarl
+    outvar = ""
+    for i in range(1, 30):
+        outvar += random.choice('qwertzuioplkjhgfdsayxcvbnmQWERTZUIOPLKJHGFDSAYXCVBNM1234567890')
+    outvar += str(inside['sessionnum'])
+    for i in range(1, 30):
+        outvar += random.choice('qwertzuioplkjhgfdsayxcvbnmQWERTZUIOPLKJHGFDSAYXCVBNM1234567890')
+    inside['sessionnum'] += 1
+    sessarl[outvar] = {}
+    return outvar
 
 class Getco:
     def POST(self):
-        timstart = int(time.time())
+        sv=web.cookies().get('php')
         global omx
         inpury = web.input()
 # command check
